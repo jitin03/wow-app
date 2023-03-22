@@ -18,7 +18,6 @@ class ProviderService {
   Future<ProviderDetail> getProviderProfile() async {
     var loginDetails = await SharedService.loginDetails();
 
-
     final queryParameters = {
       'phoneNo': AUTHService.getUserPhoneNo(loginDetails!.jwt),
     };
@@ -27,13 +26,13 @@ class ProviderService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${loginDetails!.jwt}'
     };
-    var url =
-        Uri.http(Config.apiURL, Config.providerProfileByPhoneNoAPI, queryParameters);
+    var url = Uri.http(
+        Config.apiURL, Config.providerProfileByPhoneNoAPI, queryParameters);
 
     Response response = await http.get(url, headers: requestHeaders);
     print("provider profile");
     print(response.body);
-    print( profileEmailFromJson(response.body).id!);
+    print(profileEmailFromJson(response.body).id!);
     if (response.statusCode == 200) {
       await SharedService.setProviderId(
         profileEmailFromJson(response.body).id!,
@@ -70,12 +69,14 @@ class ProviderService {
 
   static Future<bool> saveProviderServiceProfile(
       ProviderProfileResponse serviceRequest) async {
-    var loginDetails = await SharedService.loginDetails();
+    // var loginDetails = await SharedService.loginDetails();
+    var userDetails = await SharedService.userDetails();
+    print(userDetails);
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${loginDetails!.jwt}'
+      'Authorization': 'Bearer ${userDetails!.accessToken}'
     };
-    serviceRequest.userId = loginDetails.userId;
+    serviceRequest.userId = userDetails.userId;
     var url = Uri.http(Config.apiURL, Config.providerProfileAPI);
 
     print(requestHeaders);

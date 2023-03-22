@@ -30,7 +30,7 @@ class _ProviderDashboardScreenState extends ConsumerState<ProviderDashboardScree
      ProviderHome(),
      ProviderBookings(),
      // ProviderAddServiceFragment(),
-     ProviderProfileFragment(),
+     ProviderProfileScreen(),
    ];
    @override
    void initState(){

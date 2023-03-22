@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-BookingStatusResponse bookingStatusResponseFromJson(String str) => BookingStatusResponse.fromJson(json.decode(str));
+BookingStatusResponse bookingStatusResponseFromJson(String str) =>
+    BookingStatusResponse.fromJson(json.decode(str));
 
-String bookingStatusResponseToJson(BookingStatusResponse data) => json.encode(data.toJson());
+String bookingStatusResponseToJson(BookingStatusResponse data) =>
+    json.encode(data.toJson());
 
 class BookingStatusResponse {
   BookingStatusResponse({
@@ -16,6 +18,7 @@ class BookingStatusResponse {
     required this.status,
     required this.serviceType,
     required this.paymentMode,
+    required this.bookingAddress,
   });
 
   CustomerId customerId;
@@ -24,26 +27,29 @@ class BookingStatusResponse {
   String status;
   String serviceType;
   String paymentMode;
+  String bookingAddress;
 
-  factory BookingStatusResponse.fromJson(Map<String, dynamic> json) => BookingStatusResponse(
-    customerId: CustomerId.fromJson(json["customerId"]),
-    providerId: ProviderId.fromJson(json["providerId"]),
-    // bookingTime: DateTime.parse(json["bookingTime"]),
-    bookingTime: json["bookingTime"],
-    status: json["status"],
-    serviceType: json["serviceType"],
-    paymentMode: json["paymentMode"],
-  );
+  factory BookingStatusResponse.fromJson(Map<String, dynamic> json) =>
+      BookingStatusResponse(
+          customerId: CustomerId.fromJson(json["customerId"]),
+          providerId: ProviderId.fromJson(json["providerId"]),
+          // bookingTime: DateTime.parse(json["bookingTime"]),
+          bookingTime: json["bookingTime"],
+          status: json["status"],
+          serviceType: json["serviceType"],
+          paymentMode: json["paymentMode"],
+          bookingAddress: json['bookingAddress']);
 
   Map<String, dynamic> toJson() => {
-    "customerId": customerId.toJson(),
-    "providerId": providerId.toJson(),
-    // "bookingTime": bookingTime.toIso8601String(),
-    "bookingTime": bookingTime.toString(),
-    "status": status,
-    "serviceType": serviceType,
-    "paymentMode": paymentMode,
-  };
+        "customerId": customerId.toJson(),
+        "providerId": providerId.toJson(),
+        // "bookingTime": bookingTime.toIso8601String(),
+        "bookingTime": bookingTime.toString(),
+        "status": status,
+        "serviceType": serviceType,
+        "paymentMode": paymentMode,
+        'bookingAddress': bookingAddress
+      };
 }
 
 class CustomerId {
@@ -66,24 +72,24 @@ class CustomerId {
   Address address;
 
   factory CustomerId.fromJson(Map<String, dynamic> json) => CustomerId(
-    id: json["id"],
-    name: json["name"],
-    emailaddress: json["emailaddress"],
-    phonenumber: json["phonenumber"],
-    age: json["age"],
-    gender: json["gender"],
-    address: Address.fromJson(json["address"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        emailaddress: json["emailaddress"],
+        phonenumber: json["phonenumber"],
+        age: json["age"],
+        gender: json["gender"],
+        address: Address.fromJson(json["address"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "emailaddress": emailaddress,
-    "phonenumber": phonenumber,
-    "age": age,
-    "gender": gender,
-    "address": address.toJson(),
-  };
+        "id": id,
+        "name": name,
+        "emailaddress": emailaddress,
+        "phonenumber": phonenumber,
+        "age": age,
+        "gender": gender,
+        "address": address.toJson(),
+      };
 }
 
 class Address {
@@ -102,27 +108,26 @@ class Address {
   String state;
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
-    address1: json["address1"],
-    address2: json["address2"],
-    city: json["city"],
-    pincode: json["pincode"],
-    state: json["state"],
-  );
+        address1: json["address1"],
+        address2: json["address2"],
+        city: json["city"],
+        pincode: json["pincode"],
+        state: json["state"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "address1": address1,
-    "address2": address2,
-    "city": city,
-    "pincode": pincode,
-    "state": state,
-  };
+        "address1": address1,
+        "address2": address2,
+        "city": city,
+        "pincode": pincode,
+        "state": state,
+      };
 }
 
 class ProviderId {
   ProviderId({
     required this.id,
     required this.serviceLists,
-
     required this.phonenumber,
     required this.address,
   });
@@ -134,18 +139,17 @@ class ProviderId {
   List<Address> address;
 
   factory ProviderId.fromJson(Map<String, dynamic> json) => ProviderId(
-    id: json["id"],
-    serviceLists: List<String>.from(json["serviceLists"].map((x) => x)),
-
-    phonenumber: json["phonenumber"],
-    address: List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
-  );
+        id: json["id"],
+        serviceLists: List<String>.from(json["serviceLists"].map((x) => x)),
+        phonenumber: json["phonenumber"],
+        address:
+            List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "serviceLists": List<dynamic>.from(serviceLists.map((x) => x)),
-
-    "phonenumber": phonenumber,
-    "address": List<dynamic>.from(address.map((x) => x.toJson())),
-  };
+        "id": id,
+        "serviceLists": List<dynamic>.from(serviceLists.map((x) => x)),
+        "phonenumber": phonenumber,
+        "address": List<dynamic>.from(address.map((x) => x.toJson())),
+      };
 }

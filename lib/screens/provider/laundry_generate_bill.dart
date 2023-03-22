@@ -5,7 +5,6 @@ import 'package:maven_class/model/booking_model.dart';
 import 'package:maven_class/model/cart.dart';
 import 'package:maven_class/provider/cart_view_model.dart';
 import 'package:maven_class/provider/data_provider.dart';
-import 'package:maven_class/screens/components/custom_stepp.dart';
 import 'package:maven_class/screens/components/round_button_icon.dart';
 import 'package:maven_class/utils/config.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -35,7 +34,8 @@ class _GenerateBillScreenState
   void initState() {
     super.initState();
     bookingResponseModel = widget.bookingResponseModel;
-    print("build");
+    
+    ref.refresh(billingDataProvider(bookingResponseModel!.bookingId.toString()));
   }
 
   @override
@@ -43,9 +43,10 @@ class _GenerateBillScreenState
     final _billing_data = ref
         .watch(billingDataProvider(bookingResponseModel!.bookingId.toString()));
 
-    final _providerFiledata = ref.watch(generateBillState(bookingResponseModel!.bookingId.toString()));
+    final _providerFiledata = ref
+        .watch(generateBillState(bookingResponseModel!.bookingId.toString()));
 
-    final cartList = ref.watch(cartListProvider).list =
+    var cartList = ref.watch(cartListProvider).list =
         (ref.watch(cartListProvider).list.length == 0)
             ? [
                 Cart(id: 0, title: "", price: 1, count: 0),
@@ -57,9 +58,9 @@ class _GenerateBillScreenState
               ]
             : ref.watch(cartListProvider).list;
 
-    final totalAmount = ref.watch(totalAmountProvider);
+    var totalAmount = ref.read(totalAmountProvider);
 
-
+    int indexOfServiceName = -1;
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -67,7 +68,13 @@ class _GenerateBillScreenState
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
-          onTap: () {
+          onTap: () async {
+            // ref.invalidate(totalAmountProvider);
+            ref.invalidate(cartListProvider);
+            ref.invalidate(billingDataProvider(
+                bookingResponseModel!.bookingId.toString()));
+            totalAmount = 0.0;
+            cartList = [];
             Navigator.pop(context);
           },
         ),
@@ -83,16 +90,22 @@ class _GenerateBillScreenState
       ),
       body: _providerFiledata.when(
         data: (_data) {
+          for (int i = 0; i < _data.profileData.serviceLists!.length; i++) {
+            if (_data.profileData.serviceLists![i].name ==
+                bookingResponseModel!.serviceType.toString()) {
+              indexOfServiceName = i;
+              break;
+            }
+          }
 
           return Stack(children: [
             Container(
-              margin: EdgeInsets.fromLTRB(25,20,25,20),
+              margin: EdgeInsets.fromLTRB(25, 20, 25, 20),
               alignment: Alignment.center,
               child: Form(
                 key: formkey,
                 child: Column(
                   children: [
-
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0, right: 10),
                       child: Row(
@@ -132,18 +145,22 @@ class _GenerateBillScreenState
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: _data
-                            .profileData.serviceLists![0].subCategory!.length,
+                            .profileData
+                            .serviceLists![indexOfServiceName]
+                            .subCategory!
+                            .length,
                         itemBuilder: (context, index) {
-                          print( _data.profileData
-                              .serviceLists![0].subCategory![index].price!);
-                          cartList[index].price = _data.profileData
-                              .serviceLists![0].subCategory![index].price!;
-                          serviceList.name =
-                              _data.profileData.serviceLists![0].name;
-                          serviceList.price =
-                              _data.profileData.serviceLists![0].price;
+                          cartList[index].price = _data
+                              .profileData
+                              .serviceLists![indexOfServiceName]
+                              .subCategory![index]
+                              .price!;
+                          serviceList.name = _data.profileData
+                              .serviceLists![indexOfServiceName].name;
+                          serviceList.price = _data.profileData
+                              .serviceLists![indexOfServiceName].price;
                           //
-                          if(!isEdit) {
+                          if (!isEdit) {
                             if (_data.billingResponse != null &&
                                 _data.billingResponse.isNotEmpty &&
                                 _data.billingResponse[0].serviceLists != null &&
@@ -156,6 +173,8 @@ class _GenerateBillScreenState
                                 cartList[index].count =
                                     int.tryParse(subCategories[index].count) ??
                                         0;
+                                totalAmount = double.parse(
+                                    _data.billingResponse![0].grossAmount);
                               } else {
                                 cartList[index].count = 0;
                               }
@@ -164,31 +183,20 @@ class _GenerateBillScreenState
                             }
                           }
 
-
-                          // for( var i=0;i<_data.profileData.serviceLists![0].subCategory!.length;i++){
-                          //
-                          //   if(i>_data.billingResponse[0].serviceLists[0].subCategories.length){
-                          //     cartList[index].count =0;
-                          //   }else{
-                          //     cartList[index].count = int.parse(_data.billingResponse[0].serviceLists[0].subCategories[index].count);
-                          //   }
-                          //
-                          // }
-
-
-
                           return Align(
                             alignment: Alignment.center,
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
                                   child: Text(
                                     softWrap: true,
-                                    _data.profileData.serviceLists![0]
-                                            .subCategory![index].name! +
-                                        ' (${_data.profileData.serviceLists![0].subCategory![index].price} per piece)',
+                                    _data
+                                            .profileData
+                                            .serviceLists![indexOfServiceName]
+                                            .subCategory![index]
+                                            .name! +
+                                        ' (${_data.profileData.serviceLists![indexOfServiceName].subCategory![index].price} per piece)',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontFamily: 'Work Sans',
@@ -204,9 +212,6 @@ class _GenerateBillScreenState
                                         icon: Icons.remove,
                                         iconSize: 22.0,
                                         onPress: () {
-                                          print(cartList[index]
-                                              .count
-                                              .toString());
                                           ref
                                               .read(cartListProvider)
                                               .decrement(index);
@@ -219,7 +224,7 @@ class _GenerateBillScreenState
                                         child: Text(
                                           cartList[index].count.toString(),
                                           style: TextStyle(
-                                            fontSize: 22.0 * 0.8,
+                                            fontSize: 22.0 * 0.7,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -243,14 +248,19 @@ class _GenerateBillScreenState
                                 // Text(cartList[index].count.toString() ?? 'asdsad'),
                                 // Text((_data.profileData.serviceLists![0]
                                 //         .subCategory![index].price! * (cartList[index].count!)).toStringAsFixed(1) ),
-                                Container(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      '\u{20B9}' +
-                                          (cartList[index].price! *
-                                                  (cartList[index].count!))
-                                              .toStringAsFixed(1),
+                                Expanded(
+                                  child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                                    child: Container(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '\u{20B9}' +
+                                              (cartList[index].price! *
+                                                      (cartList[index].count!))
+                                                  .toStringAsFixed(1),
+                                        style: TextStyle(fontFamily: 'Work Sans',fontSize: 14),),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -277,8 +287,19 @@ class _GenerateBillScreenState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Items (${cartList.length})"),
-                              Text("\$${totalAmount.toStringAsFixed(2)}"),
+                              Text("Items price"),
+                              !isEdit && _data.billingResponse!.length > 0
+                                  ? Text(
+                                      "\u{20B9}${_data.billingResponse![0].grossAmount}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue))
+                                  : Text(
+                                      "\u{20B9}${(totalAmount).toStringAsFixed(2)}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue),
+                                    )
                             ],
                           ),
                           const SizedBox(height: 8),
@@ -309,10 +330,17 @@ class _GenerateBillScreenState
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
-                              Text("\$${(totalAmount).toStringAsFixed(2)}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue))
+                              !isEdit && _data.billingResponse!.length > 0
+                                  ? Text(
+                                      "\u{20B9}${_data.billingResponse[0].grossAmount}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue))
+                                  : Text(
+                                      "\u{20B9}${(totalAmount).toStringAsFixed(2)}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue))
                             ],
                           ),
                         ],
@@ -334,7 +362,8 @@ class _GenerateBillScreenState
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
-                        onPressed: () async {
+                        onPressed: _data.billingResponse[0].status !="Paid" ?
+                            () async {
                           billingRequest.providerId = _data.profileData.id;
                           billingRequest.customerId =
                               bookingResponseModel!.customerId![0].id;
@@ -344,14 +373,23 @@ class _GenerateBillScreenState
 
                           for (int index = 0;
                               index <
-                                  _data.profileData!.serviceLists![0]
-                                      .subCategory!.length;
+                                  _data
+                                      .profileData!
+                                      .serviceLists![indexOfServiceName]
+                                      .subCategory!
+                                      .length;
                               index++) {
                             var subCategories = SubCategories();
-                            subCategories.name = _data.profileData
-                                ?.serviceLists?[0].subCategory?[index].name;
-                            subCategories.price = _data.profileData
-                                ?.serviceLists?[0].subCategory?[index].price;
+                            subCategories.name = _data
+                                .profileData
+                                ?.serviceLists?[indexOfServiceName]
+                                .subCategory?[index]
+                                .name;
+                            subCategories.price = _data
+                                .profileData
+                                ?.serviceLists?[indexOfServiceName]
+                                .subCategory?[index]
+                                .price;
                             subCategories.count =
                                 cartList?[index].count.toString() ?? "";
                             subCategoriesList.add(subCategories);
@@ -383,7 +421,7 @@ class _GenerateBillScreenState
                               },
                             );
                           }
-                        },
+                        } : null,
                         child: const Text(
                           'UPDATE BILL',
                           style: TextStyle(
@@ -413,14 +451,23 @@ class _GenerateBillScreenState
 
                           for (int index = 0;
                               index <
-                                  _data.profileData!.serviceLists![0]
-                                      .subCategory!.length;
+                                  _data
+                                      .profileData!
+                                      .serviceLists![indexOfServiceName]
+                                      .subCategory!
+                                      .length;
                               index++) {
                             var subCategories = SubCategories();
-                            subCategories.name = _data.profileData
-                                ?.serviceLists?[0].subCategory?[index].name;
-                            subCategories.price = _data.profileData
-                                ?.serviceLists?[0].subCategory?[index].price;
+                            subCategories.name = _data
+                                .profileData
+                                ?.serviceLists?[indexOfServiceName]
+                                .subCategory?[index]
+                                .name;
+                            subCategories.price = _data
+                                .profileData
+                                ?.serviceLists?[indexOfServiceName]
+                                .subCategory?[index]
+                                .price;
                             subCategories.count =
                                 cartList?[index].count.toString() ?? "";
                             subCategoriesList.add(subCategories);

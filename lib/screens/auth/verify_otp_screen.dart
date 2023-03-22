@@ -25,7 +25,7 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
   UserModel loginRequestModel = UserModel();
   TextEditingController countryController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
-  bool isAPICallProcess = false;
+  bool isApiCallProcess = false;
   String? otpCode = "";
   String? phoneNo;
   @override
@@ -126,11 +126,15 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                         loginRequestModel.phoneNo =phoneNo;
                         print(otpCode);
                         print(loginRequestModel.toJson());
-
+                        setState(() {
+                          isApiCallProcess = true;
+                        });
                         var response = await ref
                             .read(authOtpProvider)
                             .verifyOtpCode(loginRequestModel);
-
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
                         if (response.message != "Otp is either expired or incorrect" || response.message !="Incorrect username or password") {
                           Navigator.pushNamedAndRemoveUntil(
                               context, ("/dashboard"), (route) => false);
@@ -148,7 +152,30 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                         }
                       }
                     },
-                    child: const Padding(
+                    child:  isApiCallProcess
+                        ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Loading...",
+                          style: TextStyle(
+                            fontFamily: 'Work Sans',
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Transform.scale(
+                          scale: 0.5,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      ],
+                    ) :const Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Text(
                         "SUBMIT",
@@ -181,7 +208,7 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                       FormHelper.showSimpleAlertDialog(
                         context,
                         Config.appName,
-                        "Something went wrong !!",
+                        "New Otp has been sent !!",
                         "OK",
                             () {
                           Navigator.of(context).pop();

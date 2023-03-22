@@ -11,8 +11,6 @@ final totalAmountProvider = StateProvider((ref) {
   final cartItems = ref.watch(cartListProvider).list;
   double totalAmount = 0.0;
   for (var item in cartItems) {
-    print(item.count!);
-    print(item.price!);
     totalAmount += item.price! * item.count!;
   }
   return totalAmount;

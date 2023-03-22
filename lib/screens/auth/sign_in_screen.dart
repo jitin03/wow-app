@@ -20,7 +20,7 @@ class _SignInState extends ConsumerState<SignIn> {
   UserModel loginRequestModel = new UserModel();
   TextEditingController countryController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
-  bool isAPICallProcess = false;
+  bool isApiCallProcess = false;
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,7 @@ class _SignInState extends ConsumerState<SignIn> {
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
-      inAsyncCall: isAPICallProcess,
+      inAsyncCall: isApiCallProcess,
       opacity: 0.3,
       valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
       child: Scaffold(
@@ -131,6 +131,9 @@ class _SignInState extends ConsumerState<SignIn> {
                         ),
                         onPressed: () async {
                           if (validateAndSave()) {
+                            setState(() {
+                              isApiCallProcess = true;
+                            });
                             print(
                                 countryController.text + phoneNoController.text);
                             Navigator.push(context,
@@ -141,9 +144,35 @@ class _SignInState extends ConsumerState<SignIn> {
                                 }));
 
                             await ref.read(authOtpProvider).requestOtp(countryController.text + phoneNoController.text);
+                            setState(() {
+                              isApiCallProcess = false;
+                            });
                           }
                         },
-                        child: const Padding(
+                        child:  isApiCallProcess
+                            ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Loading...",
+                              style: TextStyle(
+                                fontFamily: 'Work Sans',
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Transform.scale(
+                              scale: 0.5,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          ],
+                        ):const Padding(
                           padding: EdgeInsets.all(15.0),
                           child: Text(
                             "SEND OTP",

@@ -8,9 +8,6 @@ import '../../model/provide_profile_email.dart';
 
 class ProviderServices extends ConsumerStatefulWidget {
   // List<ServiceList>? serviceList;
-  ProviderDetail providerDetail;
-
-  ProviderServices({required this.providerDetail});
 
   @override
   ConsumerState<ProviderServices> createState() => _ProviderServices();
@@ -18,166 +15,174 @@ class ProviderServices extends ConsumerStatefulWidget {
 
 class _ProviderServices extends ConsumerState<ProviderServices> {
   List<ServiceList>? serviceLists;
-  late ProviderDetail providerDetail;
+
   SubCategory subCategory = new SubCategory(name: "", price: 0);
   ServiceList serviceList =
-  new ServiceList(name: "", price: 0, subCategory: []);
+      new ServiceList(name: "", price: 0, subCategory: []);
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   void initState() {
     super.initState();
-    providerDetail = widget.providerDetail!;
-    print(providerDetail.toJson());
   }
 
   @override
   Widget build(BuildContext context) {
+    final _providerFiledata = ref.watch(providerProfileDataProvider);
+    print(_providerFiledata.value!.name);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "My Services",
+        appBar: AppBar(
+          leading: GestureDetector(
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(
+            "My Services",
+          ),
+          backgroundColor: primaryColor,
+          titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontFamily: "Work Sans",
+              fontSize: 18,
+              fontWeight: FontWeight.w800),
         ),
-        backgroundColor: primaryColor,
-        titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontFamily: "Work Sans",
-            fontSize: 18,
-            fontWeight: FontWeight.w800),
-      ),
-      body: Form(
-        key: formkey,
-        child: Stack(
-          children: [
-
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-
-
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-
-                          backgroundColor: Color(0Xff5F60B9),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(10.0)),
-                          // Background color
-                        ),
-                        onPressed: () {
-                          print("add new service");
-                          setState(() {
-                            ServiceList serviceList =
-                            new ServiceList(name: "name", price: 0, subCategory: []);
-                            providerDetail
-                                .serviceLists!
-                                .add(serviceList);
-                          });
-                        },
-                        child: Text(
-                          "ADD SERVICE",
-                          style: TextStyle(color: Colors.white),
+        body: _providerFiledata.when(
+            data: (providerDetail) {
+              return Form(
+                key: formkey,
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20,bottom: 100),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0Xff5F60B9),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    // Background color
+                                  ),
+                                  onPressed: () {
+                                    print("add new service");
+                                    setState(() {
+                                      ServiceList serviceList = new ServiceList(
+                                          name: "", price: 0, subCategory: []);
+                                      providerDetail.serviceLists!
+                                          .add(serviceList);
+                                    });
+                                  },
+                                  child: Text(
+                                    "ADD SERVICE",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0Xff5F60B9),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    // Background color
+                                  ),
+                                  onPressed: () {
+                                    print("Remove new service");
+                                    setState(() {
+                                      setState(() {
+                                        if (providerDetail.serviceLists!.length >
+                                            0) {
+                                          providerDetail.serviceLists!
+                                              .removeLast();
+                                        }
+                                      });
+                                    });
+                                  },
+                                  child: Text(
+                                    "REMOVE SERVICE",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )
+                              ],
+                            ),
+                            serviceListContainerUI(providerDetail),
+                          ],
                         ),
                       ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0Xff5F60B9),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            // Background color
+                          ),
+                          onPressed: () async {
+                            if (formkey.currentState!.validate()) {
+                              print(providerDetail.toJson());
 
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0Xff5F60B9),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(10.0)),
-                          // Background color
-                        ),
-                        onPressed: () {
-                          print("Remove new service");
-                          setState(() {
-                            setState(() {
-                              if (this
-                                  .providerDetail
-                                  .serviceLists!
-                                  .length >
-                                  0) {
-                                this
-                                    .providerDetail
-                                    .serviceLists!
-                                    .removeLast();
+                              var response = await ref
+                                  .read(providerProfileProvider)
+                                  .updateProviderProfile(
+                                      providerDetail, providerDetail.id!);
+
+                              if (response != null) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/dashboard',
+                                  (route) => false,
+                                );
+                              } else {
+                                FormHelper.showSimpleAlertDialog(
+                                  context,
+                                  Config.appName,
+                                  "Something went wrong !!",
+                                  "OK",
+                                  () {
+                                    Navigator.of(context).pop();
+                                  },
+                                );
                               }
-                            });
-                          });
-                        },
-                        child: Text(
-                          "REMOVE SERVICE",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    ],
-                  ),
-                  serviceListContainerUI(),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                margin: const EdgeInsets.all(5),
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0Xff5F60B9),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    // Background color
-                  ),
-                  onPressed: () async {
-                    if (formkey.currentState!.validate()) {
-                      print(providerDetail.toJson());
-
-                      var response = await ref
-                          .read(providerProfileProvider)
-                          .updateProviderProfile(
-                              providerDetail, providerDetail.id!);
-
-                      if (response != null) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/dashboard',
-                          (route) => false,
-                        );
-                      } else {
-                        FormHelper.showSimpleAlertDialog(
-                          context,
-                          Config.appName,
-                          "Something went wrong !!",
-                          "OK",
-                          () {
-                            Navigator.of(context).pop();
+                            }
                           },
-                        );
-                      }
-                    }
-                  },
-                  child: const Text(
-                    'UPDATE',
-                    style:
-                        TextStyle(color: Colors.white, fontFamily: 'Work Sans'),
-                  ),
+                          child: const Text(
+                            'UPDATE',
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'Work Sans'),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+              );
+            },
+            error: (err, s) => Text(err.toString()),
+            loading: () => Center(
+                  child: CircularProgressIndicator(),
+                )));
   }
 
-  Widget subCategoryContainerUI(index) {
+  Widget subCategoryContainerUI(providerDetail, index) {
     return ListView.separated(
       shrinkWrap: true,
       physics: ScrollPhysics(),
       // itemCount: serviceList.subCategory!.length,
       itemCount: providerDetail.serviceLists![index].subCategory!.length,
-      itemBuilder: (context, index) {
+      itemBuilder: (context, subCategoryIndex) {
         return Column(
           children: <Widget>[
             SizedBox(
@@ -187,7 +192,8 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
               children: <Widget>[
                 Flexible(
                   fit: FlexFit.loose,
-                  child: generateSubCategoryServiceType(index),
+                  child: generateSubCategoryServiceType(
+                      index, subCategoryIndex, providerDetail),
                 ),
               ],
             ),
@@ -198,7 +204,7 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
     );
   }
 
-  Widget serviceListContainerUI() {
+  Widget serviceListContainerUI(ProviderDetail providerDetail) {
     return ListView.separated(
       shrinkWrap: true,
       physics: ScrollPhysics(),
@@ -214,7 +220,7 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
               children: <Widget>[
                 Flexible(
                   fit: FlexFit.loose,
-                  child: generateServiceType(index),
+                  child: generateServiceType(providerDetail, index),
                 ),
               ],
             ),
@@ -225,14 +231,14 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
     );
   }
 
-  Widget generateServiceType(index) {
+  Widget generateServiceType(providerDetail, index) {
     return Container(
       // margin: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 40,
+            height: 10,
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -266,25 +272,21 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                         child: Container(
                           decoration: BoxDecoration(
                               color: Color(0XFFF6F7F9),
-                              border:
-                              Border.all(color: Color(0XFF6F7F9)),
+                              border: Border.all(color: Color(0XFF6F7F9)),
                               borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             initialValue:
-                            providerDetail.serviceLists![index].name,
-                            onChanged: (input) =>
-                            serviceLists![0].name = input,
+                                providerDetail.serviceLists![index].name,
+                            onChanged: (input) => providerDetail
+                                .serviceLists![index].name = input,
                             decoration: InputDecoration(
                                 filled: true,
                                 isDense: true,
                                 fillColor: Colors.white,
-                                contentPadding:
-                                const EdgeInsets.symmetric(
-                                    vertical: 2.0,
-                                    horizontal: 10.0),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(10.0)),
+                                    borderRadius: BorderRadius.circular(10.0)),
                                 hintText: "Service Name",
                                 labelText: "Service Name"),
                           ),
@@ -297,8 +299,7 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                         child: Container(
                           decoration: BoxDecoration(
                               color: Color(0XFFF6F7F9),
-                              border:
-                              Border.all(color: Color(0XFF6F7F9)),
+                              border: Border.all(color: Color(0XFF6F7F9)),
                               borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             initialValue: providerDetail
@@ -310,13 +311,10 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                             decoration: InputDecoration(
                                 isDense: true,
                                 fillColor: Colors.white,
-                                contentPadding:
-                                const EdgeInsets.symmetric(
-                                    vertical: 2.0,
-                                    horizontal: 10.0),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2.0, horizontal: 10.0),
                                 border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(10.0)),
+                                    borderRadius: BorderRadius.circular(10.0)),
                                 hintText: "Price",
                                 labelText: "Service Charge"),
                           ),
@@ -343,17 +341,14 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0Xff5F60B9),
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(10.0)),
+                                borderRadius: BorderRadius.circular(10.0)),
                             // Background color
                           ),
                           onPressed: () {
                             setState(() {
                               SubCategory newSubCategory =
-                              new SubCategory(
-                                  name: "name", price: 0);
-                              providerDetail
-                                  .serviceLists![index].subCategory!
+                                  new SubCategory(name: "name", price: 0);
+                              providerDetail.serviceLists![index].subCategory!
                                   .add(newSubCategory);
                             });
                           },
@@ -376,22 +371,15 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0Xff5F60B9),
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(10.0)),
+                                borderRadius: BorderRadius.circular(10.0)),
                             // Background color
                           ),
                           onPressed: () {
                             setState(() {
-                              if (this
-                                  .providerDetail
-                                  .serviceLists![index]
-                                  .subCategory!
-                                  .length >
+                              if (providerDetail.serviceLists![index]
+                                      .subCategory!.length >
                                   0) {
-                                this
-                                    .providerDetail
-                                    .serviceLists![index]
-                                    .subCategory!
+                                providerDetail.serviceLists![index].subCategory!
                                     .removeLast();
                               }
                             });
@@ -412,11 +400,9 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                   ),
                   Column(
                     children: [
-                      SingleChildScrollView(
-                        child: Container(
-                          // height: 200,
-                          child: subCategoryContainerUI(index),
-                        ),
+                      Container(
+                        // height: 200,
+                        child: subCategoryContainerUI(providerDetail, index),
                       ),
                     ],
                   ),
@@ -429,7 +415,8 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
     );
   }
 
-  Widget generateSubCategoryServiceType(index) {
+  Widget generateSubCategoryServiceType(
+      index, subCategoryIndex, providerDetail) {
     return Row(
       children: [
         Expanded(
@@ -440,10 +427,10 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                 border: Border.all(color: Color(0XFF6F7F9)),
                 borderRadius: BorderRadius.circular(10)),
             child: TextFormField(
-              initialValue:
-                  providerDetail.serviceLists![0].subCategory![index].name,
-              onChanged: (input) => providerDetail
-                  .serviceLists![index].subCategory![index].name = input,
+              initialValue: providerDetail
+                  .serviceLists![index].subCategory![subCategoryIndex].name,
+              onChanged: (input) => providerDetail.serviceLists![index]
+                  .subCategory![subCategoryIndex].name = input,
               decoration: InputDecoration(
                   filled: true,
                   isDense: true,
@@ -469,10 +456,11 @@ class _ProviderServices extends ConsumerState<ProviderServices> {
                 borderRadius: BorderRadius.circular(10)),
             child: TextFormField(
               initialValue: providerDetail
-                  .serviceLists![index].subCategory![index].price
-                  .toString(),
-              onChanged: (input) => providerDetail.serviceLists![0]
-                  .subCategory![index].price = double.parse(input),
+                      .serviceLists![index].subCategory![subCategoryIndex].price
+                      .toString() ??
+                  "0",
+              onChanged: (input) => providerDetail.serviceLists![index]
+                  .subCategory![subCategoryIndex].price = double.parse(input),
               decoration: InputDecoration(
                   filled: true,
                   isDense: true,

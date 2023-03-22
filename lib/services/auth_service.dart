@@ -130,20 +130,20 @@ class AUTHService {
       body: jsonEncode(model.toJson()),
     );
     // if (response.statusCode == 200) {
-    //   await SharedService.setLoginDetails(
-    //     verifyOtpResponseJson(
-    //       response.body,
-    //     ),
-    //   );
+
     // }
+    print(response.body);
     if (response.statusCode == 200) {
+      await SharedService.setUserDetails(
+        registerationResponseJson(
+          response.body,
+        ),
+      );
       return registerationResponseJson(response.body);
     } else {
       print(response.reasonPhrase);
       throw Exception(response.reasonPhrase);
     }
-
-
   }
 
   static Object getUserPhoneNo(token) {

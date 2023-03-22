@@ -14,6 +14,7 @@ import 'package:maven_class/provider/sharedpref/shared_preference_helper.dart';
 import 'package:maven_class/services/auth_service.dart';
 import 'package:maven_class/services/booking_service.dart';
 import 'package:maven_class/services/provider_service.dart';
+import 'package:maven_class/services/shared_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sharedPreferences =
@@ -50,6 +51,10 @@ FutureProvider<ProviderHomeData>((ref) async {
 
 final providerProfileDataProvider = FutureProvider<ProviderDetail>((ref) async {
   return ref.watch(providerServiceProvider).getProviderProfile();
+});
+
+final shareServiceDataProvider = FutureProvider<void>((ref) async {
+  return ref.read(sharedServiceProvider).logout();
 });
 
 final authDataProvider = FutureProvider.autoDispose

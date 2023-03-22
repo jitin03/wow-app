@@ -154,7 +154,7 @@ class _ProviderRegistrationScreenState
                         padding: const EdgeInsets.only(left: 10.0),
                         child: TextFormField(
                           onChanged: (input) =>
-                              registrationRequest.phonenumber = input,
+                              registrationRequest.phonenumber = '+91'+input,
                           decoration: InputDecoration(
                               suffixIcon: Align(
                                 widthFactor: 1.0,

@@ -23,6 +23,7 @@ class BookingResponseModel {
      this.customerId,
      this.providerId,
      this.bookingId,
+     this.bookingAddress,
   });
 
   String? serviceType;
@@ -32,6 +33,7 @@ class BookingResponseModel {
   List<CustomerId>? customerId;
   List<ProviderId>? providerId;
   int? bookingId;
+  String? bookingAddress;
 
   factory BookingResponseModel.fromJson(Map<String, dynamic> json) => BookingResponseModel(
     serviceType: json["serviceType"],
@@ -41,6 +43,7 @@ class BookingResponseModel {
     customerId: List<CustomerId>.from(json["customerId"].map((x) => CustomerId.fromJson(x))),
     providerId: List<ProviderId>.from(json["providerId"].map((x) => ProviderId.fromJson(x))),
     bookingId: json["bookingId"],
+    bookingAddress: json['bookingAddress']
   );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +54,7 @@ class BookingResponseModel {
     "customerId": List<dynamic>.from(customerId!.map((x) => x.toJson())),
     "providerId": List<dynamic>.from(providerId!.map((x) => x.toJson())),
     "bookingId": bookingId,
+    "bookingAddress":bookingAddress,
   };
 }
 
@@ -135,7 +139,6 @@ class ProviderId {
      this.id,
      this.name,
      this.serviceLists,
-
      this.phonenumber,
      this.address,
      this.providerIdClass,
@@ -144,7 +147,6 @@ class ProviderId {
   String? id;
   String? name;
   List<ServiceList>? serviceLists;
-
   int? phonenumber;
   List<Address>? address;
   String? providerIdClass;
@@ -163,7 +165,6 @@ class ProviderId {
     "_id": id,
     "name": name,
     "serviceLists": List<dynamic>.from(serviceLists!.map((x) => x.toJson())),
-
     "phonenumber": phonenumber,
     "address": List<dynamic>.from(address!.map((x) => x.toJson())),
     "_class": providerIdClass,
