@@ -175,12 +175,10 @@ class _CustomerProfileScreenState extends ConsumerState<ProviderProfileScreen> {
                       width: 10,
                     ),
                     Expanded(
-                      child: FittedBox(
-                        child: Text(
-                          data!.address![0].address1.toString(),
-                          style: TextStyle(
-                            fontFamily: 'Work Sans',
-                          ),
+                      child: Text(
+                        data!.address![0].address1.toString(),
+                        style: TextStyle(
+                          fontFamily: 'Work Sans',
                         ),
                       ),
                     )

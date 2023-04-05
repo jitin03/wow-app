@@ -155,7 +155,32 @@ class BookingService {
     }
   }
 
+  Future<BookingStatusResponse> modifyBookingStatus(
+      BookingStatus statuModel, bookingId) async {
+    var loginDetails = await SharedService.loginDetails();
 
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.jwt}'
+    };
+
+    var url = Uri.http(
+      Config.apiURL,
+      "/api/v1/booking/${bookingId}/status",
+    );
+
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(statuModel.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return bookingStatusResponseFromJson(response.body);
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
   static Future<BookingStatusResponse> updateBookingStatus(
       BookingStatus statuModel, bookingId) async {
     var loginDetails = await SharedService.loginDetails();

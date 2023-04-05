@@ -2,6 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:maven_class/screens/auth/sign_in_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/shared_service.dart';
+import '../../utils/config.dart';
+import '../auth/verify_otp_screen.dart';
+import '../provider/provider_dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,13 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignIn(),
-          ));
-    });
+
+    whereToGo();
   }
 
   @override
@@ -40,17 +41,61 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(image: AssetImage("assets/images/Logo.png")),
+            Container(
+        decoration: BoxDecoration(
+        shape: BoxShape.circle,
+          border: Border.all(
+            color: primaryColor,
+            width: 3.0,
+          ),
+        ),
+              child: ClipOval(
+                child: Image(
+                  image: AssetImage("assets/icons/ic_logo.png"),
+                  height: 100,
+                  width: 100,
+                ),
+              ),
+            ),
             Text(
-              "Provider",
+              "Wow Provider",
               style: TextStyle(
                   fontFamily: "Work Sans",
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.w500),
             )
           ],
         ),
       ),
     ));
+  }
+
+  Future<void> whereToGo() async {
+    var isLoggedIn = await SharedService.isLoggedIn();
+    // var isLoggedIn = false;
+
+    Timer(Duration(seconds: 3), () {
+      if (isLoggedIn != null) {
+        if (isLoggedIn) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProviderDashboardScreen(currentIndex: 0),
+              ));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignIn(),
+              ));
+        }
+      } else {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignIn(),
+            ));
+      }
+    });
   }
 }

@@ -6,6 +6,7 @@ import 'package:maven_class/screens/auth/registeration_screen.dart';
 
 import 'package:maven_class/screens/auth/sign_in_screen.dart';
 import 'package:maven_class/screens/auth/verify_otp_screen.dart';
+import 'package:maven_class/screens/provider/cash_payment_verification.dart';
 import 'package:maven_class/screens/provider/laundry_generate_bill.dart';
 
 import 'package:maven_class/screens/provider/provider_booking_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProviderDashboardScreen(currentIndex:2),
         '/': (context) => SplashScreen(),
         '/sigin': (context) =>  SignIn(),
+        '/paymentVerification': (context) =>  CashPaymentVerification(bookingId: ModalRoute.of(context)!.settings.arguments),
         '/verifyOtp': (context) =>  VerifyOtp(),
         "/booking":(context)=> ProviderDashboardScreen(currentIndex:1),
         '/register':(context)=>ProviderRegistrationScreen(),

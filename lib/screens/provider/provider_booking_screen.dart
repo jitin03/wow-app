@@ -20,14 +20,13 @@ class ProviderBookings extends ConsumerWidget {
     BookingStatus bookingStatus = BookingStatus();
 
     return RefreshIndicator(
-      onRefresh: () async{  
+      onRefresh: () async {
         ref.refresh(bookingDataProvider);
       },
       child: Container(
         child: _data.when(
           data: (_data) {
             List<BookingResponseModel> bookings = _data.map((e) => e).toList();
-            print(bookings.length);
 
             return (bookings.length > 0)
                 ? Column(
@@ -59,7 +58,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   bookings[index].serviceType!,
                                                   style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontFamily: 'Work Sans',
                                                       color: Color(0xFF1C1F34)),
                                                 ),
@@ -75,7 +75,8 @@ class ProviderBookings extends ConsumerWidget {
                                                       color: Colors.white,
                                                       width: 2,
                                                     ),
-                                                    color: Colors.deepOrangeAccent
+                                                    color: Colors
+                                                        .deepOrangeAccent
                                                         .withOpacity(0.5),
                                                     borderRadius:
                                                         BorderRadius.all(
@@ -88,7 +89,8 @@ class ProviderBookings extends ConsumerWidget {
                                                       bookings[index].status!,
                                                       style: TextStyle(
                                                           color: Colors.white,
-                                                          fontFamily: 'Work Sans',
+                                                          fontFamily:
+                                                              'Work Sans',
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 12),
@@ -107,7 +109,7 @@ class ProviderBookings extends ConsumerWidget {
                                                     ),
                                                     color: primaryColor,
                                                     borderRadius:
-                                                    BorderRadius.all(
+                                                        BorderRadius.all(
                                                       Radius.circular(10),
                                                     ),
                                                   ),
@@ -139,7 +141,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(ic_location),
                                                     color: Color(0XFF130F26),
@@ -152,8 +155,9 @@ class ProviderBookings extends ConsumerWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
-                                                  child: Text(
-                                                    bookings[index].bookingAddress!,
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .bookingAddress!,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -174,7 +178,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(calendar),
                                                     color: Color(0XFF130F26),
@@ -187,7 +192,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
                                                   child: Text(
-                                                    bookings[index].bookingTime!,
+                                                    bookings[index]
+                                                        .bookingTime!,
                                                     // DateFormat('dd MMM, EEE, '
                                                     //         'yyyy GG hh:mm aaa')
                                                     //     .format(DateTime.parse(
@@ -213,7 +219,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(profile),
                                                     color: Color(0XFF130F26),
@@ -238,7 +245,43 @@ class ProviderBookings extends ConsumerWidget {
                                             ],
                                           ),
                                         ),
-
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Align(
+                                                  alignment:
+                                                  Alignment.centerLeft,
+                                                  child: ImageIcon(
+                                                    AssetImage(calling),
+                                                    color: Color(0XFF130F26),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 16, right: 5),
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .customerId![0]
+                                                        .phonenumber.toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(7.0),
                                           child: Divider(
@@ -255,8 +298,8 @@ class ProviderBookings extends ConsumerWidget {
                                               children: [
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0Xff5F60B9),
                                                       shape:
@@ -274,7 +317,7 @@ class ProviderBookings extends ConsumerWidget {
                                                             .customerId![0]
                                                             .name,
                                                         bookings[index]
-                                                                .bookingAddress,
+                                                            .bookingAddress,
                                                         bookings[index]
                                                             .bookingTime,
                                                         "pending",
@@ -283,7 +326,8 @@ class ProviderBookings extends ConsumerWidget {
                                                               "Accepted";
                                                           BookingService.updateBookingStatus(
                                                                   bookingStatus,
-                                                                  bookings[index]
+                                                                  bookings[
+                                                                          index]
                                                                       .bookingId)
                                                               .then(
                                                             (response) {
@@ -292,7 +336,8 @@ class ProviderBookings extends ConsumerWidget {
                                                                 FormHelper
                                                                     .showSimpleAlertDialog(
                                                                   context,
-                                                                  Config.appName,
+                                                                  Config
+                                                                      .appName,
                                                                   "Booking Request is accepted by you!",
                                                                   "OK",
                                                                   () {
@@ -311,7 +356,8 @@ class ProviderBookings extends ConsumerWidget {
                                                                 FormHelper
                                                                     .showSimpleAlertDialog(
                                                                   context,
-                                                                  Config.appName,
+                                                                  Config
+                                                                      .appName,
                                                                   "Something went wrong!",
                                                                   "OK",
                                                                   () {
@@ -349,8 +395,8 @@ class ProviderBookings extends ConsumerWidget {
                                                 ),
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0XffF6F7F9),
                                                       shape:
@@ -366,12 +412,10 @@ class ProviderBookings extends ConsumerWidget {
                                                           () {
                                                         bookingStatus.status =
                                                             "Rejected";
-                                                        BookingService
-                                                                .updateBookingStatus(
-                                                                    bookingStatus,
-                                                                    bookings[
-                                                                            index]
-                                                                        .bookingId)
+                                                        BookingService.updateBookingStatus(
+                                                                bookingStatus,
+                                                                bookings[index]
+                                                                    .bookingId)
                                                             .then(
                                                           (response) {
                                                             if (response !=
@@ -418,8 +462,8 @@ class ProviderBookings extends ConsumerWidget {
                                                       child: Text(
                                                         "DECLINE",
                                                         style: TextStyle(
-                                                            color:
-                                                                Color(0xff1C1F34),
+                                                            color: Color(
+                                                                0xff1C1F34),
                                                             fontSize: 14,
                                                             fontWeight:
                                                                 FontWeight.w500,
@@ -436,7 +480,8 @@ class ProviderBookings extends ConsumerWidget {
                                       ],
                                     ),
                                   ));
-                                } else if (bookings[index].status == "Accepted") {
+                                } else if (bookings[index].status ==
+                                    "Accepted") {
                                   return ReusableCard(
                                       cardChild: Container(
                                     child: Column(
@@ -452,7 +497,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   bookings[index].serviceType!,
                                                   style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontFamily: 'Work Sans',
                                                       color: Color(0xFF1C1F34)),
                                                 ),
@@ -480,7 +526,8 @@ class ProviderBookings extends ConsumerWidget {
                                                     child: Text(
                                                       bookings[index].status!,
                                                       style: TextStyle(
-                                                          fontFamily: 'Work Sans',
+                                                          fontFamily:
+                                                              'Work Sans',
                                                           color:
                                                               Colors.green[800],
                                                           fontWeight:
@@ -501,7 +548,7 @@ class ProviderBookings extends ConsumerWidget {
                                                     ),
                                                     color: primaryColor,
                                                     borderRadius:
-                                                    BorderRadius.all(
+                                                        BorderRadius.all(
                                                       Radius.circular(10),
                                                     ),
                                                   ),
@@ -533,7 +580,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(ic_location),
                                                     color: Color(0XFF130F26),
@@ -546,8 +594,9 @@ class ProviderBookings extends ConsumerWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
-                                                  child: Text(
-                                                    bookings[index].bookingAddress!,
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .bookingAddress!,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -568,7 +617,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(calendar),
                                                     color: Color(0XFF130F26),
@@ -581,7 +631,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
                                                   child: Text(
-                                                    bookings[index].bookingTime!,
+                                                    bookings[index]
+                                                        .bookingTime!,
                                                     // DateFormat('dd MMM, EEE, '
                                                     //         'yyyy GG hh:mm aaa')
                                                     //     .format(DateTime.parse(
@@ -607,7 +658,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(profile),
                                                     color: Color(0XFF130F26),
@@ -623,6 +675,43 @@ class ProviderBookings extends ConsumerWidget {
                                                     bookings[index]
                                                         .customerId![0]
                                                         .name!,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Align(
+                                                  alignment:
+                                                  Alignment.centerLeft,
+                                                  child: ImageIcon(
+                                                    AssetImage(calling),
+                                                    color: Color(0XFF130F26),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 16, right: 5),
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .customerId![0]
+                                                        .phonenumber.toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -648,8 +737,8 @@ class ProviderBookings extends ConsumerWidget {
                                               children: [
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0Xff5F60B9),
                                                       shape:
@@ -667,18 +756,16 @@ class ProviderBookings extends ConsumerWidget {
                                                               .customerId![0]
                                                               .name,
                                                           bookings[index]
-                                                                 .bookingAddress,
+                                                              .bookingAddress,
                                                           bookings[index]
                                                               .bookingTime,
                                                           "Completed", () {
                                                         bookingStatus.status =
                                                             "Completed";
-                                                        BookingService
-                                                                .updateBookingStatus(
-                                                                    bookingStatus,
-                                                                    bookings[
-                                                                            index]
-                                                                        .bookingId)
+                                                        BookingService.updateBookingStatus(
+                                                                bookingStatus,
+                                                                bookings[index]
+                                                                    .bookingId)
                                                             .then(
                                                           (response) {
                                                             if (response !=
@@ -742,8 +829,8 @@ class ProviderBookings extends ConsumerWidget {
                                                 ),
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0XffF6F7F9),
                                                       shape:
@@ -759,12 +846,10 @@ class ProviderBookings extends ConsumerWidget {
                                                           () {
                                                         bookingStatus.status =
                                                             "Rejected";
-                                                        BookingService
-                                                                .updateBookingStatus(
-                                                                    bookingStatus,
-                                                                    bookings[
-                                                                            index]
-                                                                        .bookingId)
+                                                        BookingService.updateBookingStatus(
+                                                                bookingStatus,
+                                                                bookings[index]
+                                                                    .bookingId)
                                                             .then(
                                                           (response) {
                                                             if (response !=
@@ -813,8 +898,8 @@ class ProviderBookings extends ConsumerWidget {
                                                       child: Text(
                                                         "DECLINE",
                                                         style: TextStyle(
-                                                            color:
-                                                                Color(0xff1C1F34),
+                                                            color: Color(
+                                                                0xff1C1F34),
                                                             fontSize: 14,
                                                             fontWeight:
                                                                 FontWeight.w500,
@@ -831,7 +916,8 @@ class ProviderBookings extends ConsumerWidget {
                                       ],
                                     ),
                                   ));
-                                } else if (bookings[index].status == "Declined") {
+                                } else if (bookings[index].status ==
+                                    "Declined") {
                                   return ReusableCard(
                                       cardChild: Container(
                                     child: Column(
@@ -847,7 +933,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   bookings[index].serviceType!,
                                                   style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontFamily: 'Work Sans',
                                                       color: Color(0xFF1C1F34)),
                                                 ),
@@ -875,8 +962,10 @@ class ProviderBookings extends ConsumerWidget {
                                                     child: Text(
                                                       bookings[index].status!,
                                                       style: TextStyle(
-                                                          color: Colors.red[800],
-                                                          fontFamily: 'Work Sans',
+                                                          color:
+                                                              Colors.red[800],
+                                                          fontFamily:
+                                                              'Work Sans',
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 12),
@@ -922,7 +1011,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(ic_location),
                                                     color: Color(0XFF130F26),
@@ -935,8 +1025,9 @@ class ProviderBookings extends ConsumerWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
-                                                  child: Text(
-                                                    bookings[index].bookingAddress!,
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .bookingAddress!,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -957,7 +1048,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(calendar),
                                                     color: Color(0XFF130F26),
@@ -970,7 +1062,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
                                                   child: Text(
-                                                    bookings[index].bookingTime!,
+                                                    bookings[index]
+                                                        .bookingTime!,
                                                     // DateFormat('dd MMM, EEE, '
                                                     //         'yyyy GG hh:mm aaa')
                                                     //     .format(DateTime.parse(
@@ -996,7 +1089,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(profile),
                                                     color: Color(0XFF130F26),
@@ -1012,6 +1106,43 @@ class ProviderBookings extends ConsumerWidget {
                                                     bookings[index]
                                                         .customerId![0]
                                                         .name!,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Align(
+                                                  alignment:
+                                                  Alignment.centerLeft,
+                                                  child: ImageIcon(
+                                                    AssetImage(calling),
+                                                    color: Color(0XFF130F26),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 16, right: 5),
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .customerId![0]
+                                                        .phonenumber.toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1037,15 +1168,15 @@ class ProviderBookings extends ConsumerWidget {
                                               children: [
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0Xff5F60B9),
-                                                      disabledBackgroundColor: Theme
-                                                              .of(context)
-                                                          .primaryColor
-                                                          .withOpacity(
-                                                              .8), // Background Color
+                                                      disabledBackgroundColor:
+                                                          Theme.of(context)
+                                                              .primaryColor
+                                                              .withOpacity(
+                                                                  .8), // Background Color
                                                       disabledForegroundColor:
                                                           Colors
                                                               .white70, //Text Color
@@ -1079,8 +1210,8 @@ class ProviderBookings extends ConsumerWidget {
                                                 ),
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0XffF6F7F9),
                                                       shape:
@@ -1096,12 +1227,10 @@ class ProviderBookings extends ConsumerWidget {
                                                           () {
                                                         bookingStatus.status =
                                                             "Rejected";
-                                                        BookingService
-                                                                .updateBookingStatus(
-                                                                    bookingStatus,
-                                                                    bookings[
-                                                                            index]
-                                                                        .bookingId)
+                                                        BookingService.updateBookingStatus(
+                                                                bookingStatus,
+                                                                bookings[index]
+                                                                    .bookingId)
                                                             .then(
                                                           (response) {
                                                             if (response !=
@@ -1150,8 +1279,8 @@ class ProviderBookings extends ConsumerWidget {
                                                       child: Text(
                                                         "DECLINE",
                                                         style: TextStyle(
-                                                            color:
-                                                                Color(0xff1C1F34),
+                                                            color: Color(
+                                                                0xff1C1F34),
                                                             fontSize: 14,
                                                             fontWeight:
                                                                 FontWeight.w500,
@@ -1184,7 +1313,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   bookings[index].serviceType!,
                                                   style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontFamily: 'Work Sans',
                                                       color: Color(0xFF1C1F34)),
                                                 ),
@@ -1263,7 +1393,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(ic_location),
                                                     color: Color(0XFF130F26),
@@ -1276,8 +1407,9 @@ class ProviderBookings extends ConsumerWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
-                                                  child: Text(
-                                                    bookings[index].bookingAddress!,
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .bookingAddress!,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1298,7 +1430,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(calendar),
                                                     color: Color(0XFF130F26),
@@ -1311,7 +1444,8 @@ class ProviderBookings extends ConsumerWidget {
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
                                                   child: Text(
-                                                    bookings[index].bookingTime!,
+                                                    bookings[index]
+                                                        .bookingTime!,
                                                     // DateFormat('dd MMM, EEE, '
                                                     //         'yyyy GG hh:mm aaa')
                                                     //     .format(DateTime.parse(
@@ -1337,7 +1471,8 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: ImageIcon(
                                                     AssetImage(profile),
                                                     color: Color(0XFF130F26),
@@ -1362,7 +1497,9 @@ class ProviderBookings extends ConsumerWidget {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
                                           child: Row(
@@ -1371,9 +1508,10 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                  Alignment.centerLeft,
                                                   child: ImageIcon(
-                                                    AssetImage(ic_cash),
+                                                    AssetImage(calling),
                                                     color: Color(0XFF130F26),
                                                   ),
                                                 ),
@@ -1383,19 +1521,147 @@ class ProviderBookings extends ConsumerWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
-                                                  child: bookings[index].status=='Done' ? Text(
-                                                    "Paid",
+                                                  child: SelectableText(
+                                                    bookings[index]
+                                                        .customerId![0]
+                                                        .phonenumber.toString(),
                                                     style: TextStyle(
-                                                        color: Colors.green,
-                                                        fontSize: 16,fontWeight: FontWeight.w800,fontFamily: 'Work Sans'),
-                                                  ): Text(
-                                                    "Pending",
-                                                    style: TextStyle(
-                                                        color: Colors.deepOrangeAccent,
-                                                        fontSize: 16,fontWeight: FontWeight.w800,fontFamily: 'Work Sans'),
+                                                        color: Colors.black,
+                                                        fontSize: 16),
                                                   ),
                                                 ),
                                               ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: ImageIcon(
+                                                    AssetImage(ic_cash),
+                                                    color: Color(0XFF130F26),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: bookings[index]
+                                                            .paymentMode ==
+                                                        'Cash'
+                                                    ? 1
+                                                    : 2,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 16, right: 5),
+                                                  child: bookings[index]
+                                                              .status ==
+                                                          'Done'
+                                                      ? Text(
+                                                          "Paid",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.green,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              fontFamily:
+                                                                  'Work Sans'),
+                                                        )
+                                                      : Text(
+                                                          "Pending",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .deepOrangeAccent,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              fontFamily:
+                                                                  'Work Sans'),
+                                                        ),
+                                                ),
+                                              ),
+                                              bookings[index].paymentMode ==
+                                                          'Cash' &&
+                                                      bookings[index].status !=
+                                                          'Done'
+                                                  ? Expanded(
+                                                      flex: 1,
+                                                      child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.green,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0)),
+                                                          // Background color
+                                                        ),
+                                                        onPressed: () async {
+                                                          var response = await ref
+                                                              .read(
+                                                                  authOtpProvider)
+                                                              .requestOtp("+" +
+                                                                  bookings[
+                                                                          index]
+                                                                      .customerId![
+                                                                          0]
+                                                                      .phonenumber!
+                                                                      .toString());
+
+                                                          if (response !=
+                                                              null) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                  content: Text(
+                                                                      'OTP sent to customer!')),
+                                                            );
+                                                            Navigator
+                                                                .pushNamedAndRemoveUntil(
+                                                              context,
+                                                              '/paymentVerification',
+                                                              arguments:
+                                                                  bookings[
+                                                                          index]
+                                                                      .bookingId,
+                                                              (route) => true,
+                                                            );
+                                                          } else {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                  content: Text(
+                                                                      'Somethting went wrong!')),
+                                                            );
+                                                          }
+                                                        },
+                                                        child: const Text(
+                                                          'Cash Recieved',
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  'Work Sans',
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container(),
                                             ],
                                           ),
                                         ),
@@ -1408,32 +1674,45 @@ class ProviderBookings extends ConsumerWidget {
                                         ),
                                         Container(
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                "Generate bill",
-                                                style: TextStyle(
-                                                    fontFamily: 'Work Sans',
-                                                    fontSize: 18,
-                                                    color: primaryColor,
-                                                    fontWeight: FontWeight.w500),
-                                              ),
-                                              SizedBox(width: 10,),
-                                              GestureDetector(
-                                                  onTap: () async {
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              LaundryGenerateBillScreen(
-                                                                  bookingResponseModel:
-                                                                  bookings[index]),
-                                                        ));
-                                                  },
-                                                child: const ImageIcon(
-                                                  AssetImage(ic_edit_service),
-                                                  color: primaryColor,size: 15,
-                                                ),
+                                              InkWell(
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            LaundryGenerateBillScreen(
+                                                                bookingResponseModel:
+                                                                    bookings[
+                                                                        index]),
+                                                      ));
+                                                },
+                                                child: Container(
+                                                    child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "Generate bill",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Work Sans',
+                                                          fontSize: 18,
+                                                          color: primaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    const ImageIcon(
+                                                      AssetImage(
+                                                          ic_edit_service),
+                                                      color: primaryColor,
+                                                      size: 15,
+                                                    )
+                                                  ],
+                                                )),
                                               )
                                             ],
                                           ),
@@ -1448,8 +1727,8 @@ class ProviderBookings extends ConsumerWidget {
                                               children: [
                                                 Expanded(
                                                   child: ElevatedButton(
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           Color(0Xff5F60B9),
                                                       shape:
@@ -1544,7 +1823,7 @@ showDialogFunc(context, serviceType, customerAddress, bookingDateAndTime,
               color: Colors.white,
             ),
             // padding: EdgeInsets.all(15),
-            height: MediaQuery.of(context).size.height/1.6,
+            height: MediaQuery.of(context).size.height / 1.6,
             width: MediaQuery.of(context).size.width * 0.7,
             child: Column(
               children: [
@@ -1577,7 +1856,6 @@ showDialogFunc(context, serviceType, customerAddress, bookingDateAndTime,
                     padding: const EdgeInsets.all(15.0),
                     child: Container(
                       child: ListView(
-
                         children: <Widget>[
                           SizedBox(
                             height: 10,
@@ -1593,7 +1871,6 @@ showDialogFunc(context, serviceType, customerAddress, bookingDateAndTime,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-
                             ],
                           ),
                           SizedBox(

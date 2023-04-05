@@ -17,6 +17,11 @@ import 'package:maven_class/services/provider_service.dart';
 import 'package:maven_class/services/shared_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/booking_status.dart';
+import '../model/booking_status_response.dart';
+import '../model/update_booking_request.dart';
+import '../model/update_booking_status.dart';
+
 final sharedPreferences =
     FutureProvider((_) async => await SharedPreferences.getInstance());
 final sharedPreferencesHelper = Provider(
@@ -162,6 +167,14 @@ class BookingNotifier extends ChangeNotifier {
     resp = await service.generateBilling(request, id);
     return resp;
   }
+  Future<BookingStatusResponse> modifyBookingStatus(
+      BookingStatus request, String bookingId) async {
+    final service = ref.read(bookingServiceProvider);
+    late BookingStatusResponse resp;
+
+    resp = await service.modifyBookingStatus(request, bookingId);
+    return resp;
+  }
   Future<String> updateBilling(
       BillingRequest request, String id) async {
     final service = ref.read(bookingServiceProvider);
@@ -179,3 +192,5 @@ final billingProvider = ChangeNotifierProvider.autoDispose((ref) {
 final providerProfileProvider = ChangeNotifierProvider.autoDispose((ref) {
   return ProviderProfileNotifier(ref);
 });
+
+

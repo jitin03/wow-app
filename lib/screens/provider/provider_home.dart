@@ -164,6 +164,7 @@ class ProviderHome extends ConsumerWidget {
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
                         child: GestureDetector(
@@ -240,7 +241,7 @@ class ProviderHome extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+
                       Expanded(
                         child: Container(
                           // width: double.infinity,
@@ -268,7 +269,7 @@ class ProviderHome extends ConsumerWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "98",
+                                        "0",
                                         style: TextStyle(
                                             fontFamily: 'Work Sans',
                                             color: Colors.white,
