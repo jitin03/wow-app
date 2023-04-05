@@ -11,11 +11,12 @@ class ProviderHome extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _providerFiledata = ref.watch(providerHomStats);
+    // final _providerFiledata = ref.watch(providerHomStats);
+    final allBookings = ref.watch(allbookingProvider);
 
     return SingleChildScrollView(
         physics: ScrollPhysics(),
-        child: _providerFiledata.when(
+        child: allBookings.when(
           data: (_providerFiledata) {
             return Column(
               children: [
@@ -29,7 +30,7 @@ class ProviderHome extends ConsumerWidget {
                         width: double.infinity,
                         margin: EdgeInsets.only(left: 16, right: 16),
                         child: Text(
-                          "Hello, ${_providerFiledata.profileData.name}",
+                          "Hello",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -51,113 +52,113 @@ class ProviderHome extends ConsumerWidget {
                 SizedBox(
                   height: 30,
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height/5,
-
-                  child: ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 10,
-                      ) ,
-                    // physics: const NeverScrollableScrollPhysics(),
-                      itemCount:
-                          _providerFiledata.profileData.serviceLists!.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          
-                          padding: EdgeInsets.all(20),
-                          margin: EdgeInsets.only(left: 16, right: 16),
-                          decoration: BoxDecoration(
-                            color: Color(
-                              0XffF6F7F9,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                        "Service Name: ${_providerFiledata!.profileData.serviceLists![index].name}",
-                                        style: TextStyle(
-                                            fontFamily: 'Work Sans',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w800)),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return ProviderServices();
-                                        }));
-                                      },
-                                      child: const ImageIcon(
-                                        AssetImage(ic_edit_service),
-                                        color: primaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  child: Text("Pricing details:",
-                                      style: TextStyle(
-                                          fontFamily: 'Work Sans',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w800)),
-                                ),
-                                Container(
-                                  child: ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: _providerFiledata.profileData
-                                        .serviceLists![index].subCategory!.length,
-                                    itemBuilder: (context, subCategoryIndex) {
-                                      return Container(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            _providerFiledata
-                                                .profileData
-                                                .serviceLists![index]
-                                                .subCategory![subCategoryIndex]
-                                                .name!,
-                                            style: TextStyle(
-                                                fontFamily: 'Work Sans',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w800),
-                                          ),
-                                          Text(
-                                              '\u{20B9} ${_providerFiledata.profileData.serviceLists![index].subCategory![subCategoryIndex].price!}',
-                                              style: TextStyle(
-                                                  fontFamily: 'Work Sans',
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w800))
-                                        ],
-                                      ));
-                                    },
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                          ),
-                        );
-
-                      }),
-                ),
+                // Container(
+                //   height: MediaQuery.of(context).size.height/5,
+                //
+                //   child: ListView.separated(
+                //       separatorBuilder: (context, index) => SizedBox(
+                //         height: 10,
+                //       ) ,
+                //     // physics: const NeverScrollableScrollPhysics(),
+                //       itemCount:
+                //           _providerFiledata.profileData.serviceLists!.length,
+                //       itemBuilder: (context, index) {
+                //         return Container(
+                //
+                //           padding: EdgeInsets.all(20),
+                //           margin: EdgeInsets.only(left: 16, right: 16),
+                //           decoration: BoxDecoration(
+                //             color: Color(
+                //               0XffF6F7F9,
+                //             ),
+                //             borderRadius: BorderRadius.all(
+                //               Radius.circular(10),
+                //             ),
+                //           ),
+                //           child: Container(
+                //             child: Column(
+                //               mainAxisAlignment: MainAxisAlignment.start,
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Row(
+                //                   mainAxisAlignment: MainAxisAlignment.center,
+                //                   children: [
+                //                     Text(
+                //                         "Service Name: ${_providerFiledata!.profileData.serviceLists![index].name}",
+                //                         style: TextStyle(
+                //                             fontFamily: 'Work Sans',
+                //                             fontSize: 14,
+                //                             fontWeight: FontWeight.w800)),
+                //                     SizedBox(
+                //                       width: 10,
+                //                     ),
+                //                     InkWell(
+                //                       onTap: () {
+                //                         Navigator.push(context,
+                //                             MaterialPageRoute(
+                //                                 builder: (context) {
+                //                           return ProviderServices();
+                //                         }));
+                //                       },
+                //                       child: const ImageIcon(
+                //                         AssetImage(ic_edit_service),
+                //                         color: primaryColor,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 SizedBox(
+                //                   height: 10,
+                //                 ),
+                //                 Container(
+                //                   child: Text("Pricing details:",
+                //                       style: TextStyle(
+                //                           fontFamily: 'Work Sans',
+                //                           fontSize: 14,
+                //                           fontWeight: FontWeight.w800)),
+                //                 ),
+                //                 Container(
+                //                   child: ListView.builder(
+                //                     physics: NeverScrollableScrollPhysics(),
+                //                     shrinkWrap: true,
+                //                     itemCount: _providerFiledata.profileData
+                //                         .serviceLists![index].subCategory!.length,
+                //                     itemBuilder: (context, subCategoryIndex) {
+                //                       return Container(
+                //                           child: Row(
+                //                         mainAxisAlignment:
+                //                             MainAxisAlignment.spaceBetween,
+                //                         children: [
+                //                           Text(
+                //                             _providerFiledata
+                //                                 .profileData
+                //                                 .serviceLists![index]
+                //                                 .subCategory![subCategoryIndex]
+                //                                 .name!,
+                //                             style: TextStyle(
+                //                                 fontFamily: 'Work Sans',
+                //                                 fontSize: 14,
+                //                                 fontWeight: FontWeight.w800),
+                //                           ),
+                //                           Text(
+                //                               '\u{20B9} ${_providerFiledata.profileData.serviceLists![index].subCategory![subCategoryIndex].price!}',
+                //                               style: TextStyle(
+                //                                   fontFamily: 'Work Sans',
+                //                                   fontSize: 14,
+                //                                   fontWeight: FontWeight.w800))
+                //                         ],
+                //                       ));
+                //                     },
+                //                   ),
+                //                 ),
+                //
+                //               ],
+                //             ),
+                //           ),
+                //         );
+                //
+                //       }),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -166,14 +167,90 @@ class ProviderHome extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      // Expanded(
+                      //   child: GestureDetector(
+                      //     onTap: () {
+                      //       ref.invalidate(bookingDataProvider);
+                      //       Navigator.pushNamedAndRemoveUntil(
+                      //         context,
+                      //         '/booking',
+                      //         (route) => false,
+                      //       );
+                      //     },
+                      //     child: Container(
+                      //       // width: double.infinity,
+                      //       padding: const EdgeInsets.symmetric(
+                      //           vertical: 20.0, horizontal: 0),
+                      //
+                      //       decoration: BoxDecoration(
+                      //           color: primaryColor,
+                      //           border: Border.all(
+                      //             color: Color(0XFFEBEBEB),
+                      //             width: 2,
+                      //           ),
+                      //           borderRadius: BorderRadius.all(
+                      //             Radius.circular(10),
+                      //           )),
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           Padding(
+                      //             padding: const EdgeInsets.symmetric(
+                      //                 vertical: 10.0, horizontal: 10),
+                      //             child: Container(
+                      //               child: Column(
+                      //                 crossAxisAlignment:
+                      //                     CrossAxisAlignment.start,
+                      //                 children: [
+                      //                   Text(
+                      //                     _providerFiledata!.bookingData!.length
+                      //                         .toString(),
+                      //                     style: TextStyle(
+                      //                         fontFamily: 'Work Sans',
+                      //                         color: Colors.white,
+                      //                         fontSize: 22,
+                      //                         fontWeight: FontWeight.w600),
+                      //                   ),
+                      //                   Text(
+                      //                     "Total Booking",
+                      //                     style: TextStyle(
+                      //                       color: Colors.white,
+                      //                       fontFamily: 'Work Sans',
+                      //                       fontSize: 12,
+                      //                       fontWeight: FontWeight.w500,
+                      //                     ),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           Padding(
+                      //             padding: const EdgeInsets.only(right: 10),
+                      //             child: Container(
+                      //               padding: EdgeInsets.all(8),
+                      //               decoration: BoxDecoration(
+                      //                   shape: BoxShape.circle,
+                      //                   color: Color(0XFFF0F0FA)),
+                      //               child: Image.asset(total_booking,
+                      //                   height: 22,
+                      //                   width: 22,
+                      //                   color: primaryColor),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+
                       Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            ref.invalidate(bookingDataProvider);
+                        child: InkWell(
+                          onTap: (){
+                            ref.invalidate(allbookingProvider);
                             Navigator.pushNamedAndRemoveUntil(
                               context,
-                              '/booking',
-                              (route) => false,
+                              '/all-bookings',
+                                  (route) => false,
                             );
                           },
                           child: Container(
@@ -202,8 +279,7 @@ class ProviderHome extends ConsumerWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          _providerFiledata!.bookingData!.length
-                                              .toString(),
+                                          allBookings.value!.length.toString(),
                                           style: TextStyle(
                                               fontFamily: 'Work Sans',
                                               color: Colors.white,
@@ -211,13 +287,12 @@ class ProviderHome extends ConsumerWidget {
                                               fontWeight: FontWeight.w600),
                                         ),
                                         Text(
-                                          "Total Booking",
+                                          "Today's Services",
                                           style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Work Sans',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                              color: Colors.white,
+                                              fontFamily: 'Work Sans',
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
                                         ),
                                       ],
                                     ),
@@ -230,7 +305,7 @@ class ProviderHome extends ConsumerWidget {
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Color(0XFFF0F0FA)),
-                                    child: Image.asset(total_booking,
+                                    child: Image.asset(ic_document,
                                         height: 22,
                                         width: 22,
                                         color: primaryColor),
@@ -241,74 +316,10 @@ class ProviderHome extends ConsumerWidget {
                           ),
                         ),
                       ),
-
-                      Expanded(
-                        child: Container(
-                          // width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20.0, horizontal: 0),
-
-                          decoration: BoxDecoration(
-                              color: primaryColor,
-                              border: Border.all(
-                                color: Color(0XFFEBEBEB),
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              )),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 10),
-                                child: Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "0",
-                                        style: TextStyle(
-                                            fontFamily: 'Work Sans',
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        "Today's Services",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Work Sans',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0XFFF0F0FA)),
-                                  child: Image.asset(ic_document,
-                                      height: 22,
-                                      width: 22,
-                                      color: primaryColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
-                ChartComponent(),
+                // ChartComponent(),
               ],
             );
           },

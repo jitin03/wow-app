@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maven_class/locale/base_language.dart';
 import 'package:maven_class/provider/data_provider.dart';
 import 'package:maven_class/screens/components/chart_component.dart';
+import 'package:maven_class/screens/provider/all_booking_screen.dart';
 
 import 'package:maven_class/screens/provider/provider_booking_screen.dart';
 import 'package:maven_class/screens/provider/provider_home.dart';
@@ -28,9 +29,10 @@ class _ProviderDashboardScreenState extends ConsumerState<ProviderDashboardScree
    int currentIndex = 0;
    List<Widget> fragmentList = [
      ProviderHome(),
-     ProviderBookings(),
+     // ProviderBookings(),
+     AllBookings(),
      // ProviderAddServiceFragment(),
-     ProviderProfileScreen(),
+     // ProviderProfileScreen(),
    ];
    @override
    void initState(){
@@ -89,12 +91,12 @@ class _ProviderDashboardScreenState extends ConsumerState<ProviderDashboardScree
             //   // selectedIcon: ic_fill_wallet.iconImage(color: context.primaryColor),
             //   label: "Payment",
             // ),
-            NavigationDestination(
-              icon:
-                  ImageIcon(AssetImage(profile), color: appTextSecondaryColor),
-              // selectedIcon: ic_fill_profile.iconImage(color: context.primaryColor),
-              label: "Profile",
-            ),
+            // NavigationDestination(
+            //   icon:
+            //       ImageIcon(AssetImage(profile), color: appTextSecondaryColor),
+            //   // selectedIcon: ic_fill_profile.iconImage(color: context.primaryColor),
+            //   label: "Profile",
+            // ),
           ],
           onDestinationSelected: (index) {
             print(index);

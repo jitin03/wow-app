@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Text(
-              "Wow Provider",
+              "Wow Delivery",
               style: TextStyle(
                   fontFamily: "Work Sans",
                   fontSize: 22,

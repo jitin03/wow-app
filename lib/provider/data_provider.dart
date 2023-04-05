@@ -41,6 +41,8 @@ final bookingDataProvider =
 });
 
 
+
+
 // Billing Screen provider
 final billingScreenDataProvider =
 FutureProvider<ProviderHomeData>((ref) async {
@@ -56,6 +58,10 @@ FutureProvider<ProviderHomeData>((ref) async {
 
 final providerProfileDataProvider = FutureProvider<ProviderDetail>((ref) async {
   return ref.watch(providerServiceProvider).getProviderProfile();
+});
+
+final allbookingProvider = FutureProvider<List<BookingResponseModel>>((ref) async {
+  return ref.watch(bookingServiceProvider).getAllBooking();
 });
 
 final shareServiceDataProvider = FutureProvider<void>((ref) async {

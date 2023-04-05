@@ -9,6 +9,7 @@ class Config {
   static const verifyOtpAPI = "/api/v1/auth/verifyOtp/";
   static const registerAPI = "/api/v1/auth/signup";
   static const providerBookingAPI = "/api/v1/booking/provider";
+  static const allBookingAPI = "/api/v1/booking";
   static const providerProfileAPI="api/v1/providers";
   static const providerProfileByPhoneNoAPI="api/v1/providers/profile";
   static const bookingServiceAPI='/api/v1/booking/';

@@ -14,6 +14,35 @@ import 'package:maven_class/utils/config.dart';
 class BookingService {
   static var client = http.Client();
 
+  Future<List<BookingResponseModel>> getAllBooking(
+      ) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.jwt}'
+    };
+
+    var url =
+    Uri.http(Config.apiURL, Config.allBookingAPI);
+
+
+    Response response = await http.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      print("Empty");
+      print(response.body);
+
+      print("Empty");
+      return welcomeFromJson(response.body);
+    } else if (response.statusCode == 404) {
+      return <BookingResponseModel>[];
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
+
   Future<List<BookingResponseModel>> getProviderBooking(
       String providerId) async {
     var loginDetails = await SharedService.loginDetails();

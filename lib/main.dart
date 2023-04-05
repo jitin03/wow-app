@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
         '/sigin': (context) =>  SignIn(),
         '/paymentVerification': (context) =>  CashPaymentVerification(bookingId: ModalRoute.of(context)!.settings.arguments),
         '/verifyOtp': (context) =>  VerifyOtp(),
-        "/booking":(context)=> ProviderDashboardScreen(currentIndex:1),
+        // "/booking":(context)=> ProviderDashboardScreen(currentIndex:1),
+        "/all-bookings":(context)=> ProviderDashboardScreen(currentIndex:1),
         '/register':(context)=>ProviderRegistrationScreen(),
         '/dashboard': (context) =>  ProviderDashboardScreen(currentIndex:0),
 
