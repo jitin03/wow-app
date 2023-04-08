@@ -340,7 +340,7 @@ class AllBookings extends ConsumerWidget {
                                                   alignment:
                                                   Alignment.centerLeft,
                                                   child: ImageIcon(
-                                                    AssetImage(calling),
+                                                    AssetImage(ic_location),
                                                     color: Colors.green,
                                                   ),
                                                 ),
@@ -353,7 +353,44 @@ class AllBookings extends ConsumerWidget {
                                                   child: SelectableText(
                                                     bookings[index]
                                                         .providerId![0]
-                                                        .name!,
+                                                        .address![0].address1.toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Align(
+                                                  alignment:
+                                                  Alignment.centerLeft,
+                                                  child: ImageIcon(
+                                                    AssetImage(calling),
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 16, right: 5),
+                                                  child: SelectableText(
+                                                    bookings[index]!
+                                                        .providerId![0]
+                                                        .phonenumber!.toInt().toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),

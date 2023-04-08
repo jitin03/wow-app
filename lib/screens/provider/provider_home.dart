@@ -30,7 +30,7 @@ class ProviderHome extends ConsumerWidget {
                         width: double.infinity,
                         margin: EdgeInsets.only(left: 16, right: 16),
                         child: Text(
-                          "Hello",
+                          "Hello WowService!",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),

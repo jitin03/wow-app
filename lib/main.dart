@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/': (context) => ProviderDashboardScreen(currentIndex:0),
         // '/': (context) => ProviderDashboardScreen(currentIndex:0),
-        '/profile': (context) => ProviderDashboardScreen(currentIndex:2),
+        // '/profile': (context) => ProviderDashboardScreen(currentIndex:2),
         '/': (context) => SplashScreen(),
         '/sigin': (context) =>  SignIn(),
         '/paymentVerification': (context) =>  CashPaymentVerification(bookingId: ModalRoute.of(context)!.settings.arguments),
