@@ -32,7 +32,7 @@ class BookingResponseModel {
   String? bookingTime;
   List<CustomerId>? customerId;
   List<ProviderId>? providerId;
-  int? bookingId;
+  num? bookingId;
   String? bookingAddress;
 
   factory BookingResponseModel.fromJson(Map<String, dynamic> json) => BookingResponseModel(
@@ -73,8 +73,8 @@ class CustomerId {
   String? id;
   String? name;
   String? emailaddress;
-  int? phonenumber;
-  int? age;
+  num? phonenumber;
+  num? age;
   String? gender;
   Address? address;
   String? customerIdClass;
@@ -147,7 +147,7 @@ class ProviderId {
   String? id;
   String? name;
   List<ServiceList>? serviceLists;
-  int? phonenumber;
+  num? phonenumber;
   List<Address>? address;
   String? providerIdClass;
 
@@ -180,7 +180,7 @@ class ServiceList {
 
   String? name;
   List<SubCategory>? subCategory;
-  double? price;
+  num? price;
 
   factory ServiceList.fromJson(Map<String, dynamic> json) => ServiceList(
     name: json["name"],
@@ -202,7 +202,7 @@ class SubCategory {
   });
 
   String? name;
-  double? price;
+  num? price;
 
   factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
     name: json["name"],
