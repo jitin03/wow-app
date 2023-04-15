@@ -59,6 +59,7 @@ const ic_document = 'assets/icons/ic_document.png';
 const ic_edit_service= 'assets/icons/ic_edit_square.png';
 const provider_dummy_image ='assets/images/Image.png';
 
+const male_default_profile_iamge ='assets/images/male_profile_image.png';
 const no_data_found='assets/images/ic_no_data_found.png';
 const default_profile_iamge ='assets/images/male_profile_image.png';
 const ic_cash='assets/icons/icons8-request-money-50.png';

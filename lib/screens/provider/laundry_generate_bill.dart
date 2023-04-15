@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:maven_class/model/billing_request_model.dart';
+
 import 'package:maven_class/model/booking_model.dart';
 import 'package:maven_class/model/cart.dart';
 import 'package:maven_class/provider/cart_view_model.dart';
@@ -25,7 +25,7 @@ class _GenerateBillScreenState
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   static final ValueNotifier<List<int>> quantity = ValueNotifier([0]);
   BookingResponseModel? bookingResponseModel;
-  BillingRequest billingRequest = BillingRequest();
+  // BillingRequest billingRequest = BillingRequest();
   List<ServiceLists> serviceLists = [];
   List<SubCategories> subCategoriesList = [];
   ServiceLists serviceList = ServiceLists();
@@ -106,7 +106,7 @@ class _GenerateBillScreenState
         data: (_data) {
           for (int i = 0; i < _data.profileData.serviceLists!.length; i++) {
             if (_data.profileData.serviceLists![i].name ==
-                bookingResponseModel!.serviceType.toString()) {
+                bookingResponseModel!.serviceLists![0].name.toString()) {
               indexOfServiceName = i;
               break;
             }
@@ -142,7 +142,7 @@ class _GenerateBillScreenState
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10),
                           child:
-                              Text(bookingResponseModel!.serviceType.toString()),
+                              Text(bookingResponseModel!.serviceLists![0].name.toString()),
                         ),
                       ),
                       SizedBox(
@@ -399,66 +399,66 @@ class _GenerateBillScreenState
                         ),
                         onPressed: _data.billingResponse[0].status != "Paid"
                             ? () async {
-                                billingRequest.providerId =
-                                    _data.profileData.id;
-                                billingRequest.customerId =
-                                    bookingResponseModel!.customerId![0].id;
-                                billingRequest.grossAmount =
-                                    totalAmount.toStringAsFixed(2);
-                                billingRequest.status = "Pending";
-
-                                for (int index = 0;
-                                    index <
-                                        _data
-                                            .profileData!
-                                            .serviceLists![indexOfServiceName]
-                                            .subCategory!
-                                            .length;
-                                    index++) {
-                                  var subCategories = SubCategories();
-                                  subCategories.name = _data
-                                      .profileData
-                                      ?.serviceLists?[indexOfServiceName]
-                                      .subCategory?[index]
-                                      .name;
-                                  subCategories.price = _data
-                                      .profileData
-                                      ?.serviceLists?[indexOfServiceName]
-                                      .subCategory?[index]
-                                      .price;
-                                  subCategories.count =
-                                      cartList?[index].count.toString() ?? "";
-                                  subCategoriesList.add(subCategories);
-                                }
-
-                                serviceList.subCategories = subCategoriesList;
-                                serviceLists.add(serviceList);
-
-                                billingRequest.serviceLists = serviceLists;
-                                var response = await ref
-                                    .read(billingProvider)
-                                    .updateBilling(
-                                        billingRequest,
-                                        bookingResponseModel!.bookingId
-                                            .toString());
-
-                                if (response != null) {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    '/dashboard',
-                                    (route) => false,
-                                  );
-                                } else {
-                                  FormHelper.showSimpleAlertDialog(
-                                    context,
-                                    Config.appName,
-                                    "Something went wrong !!",
-                                    "OK",
-                                    () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
-                                }
+                                // billingRequest.providerId =
+                                //     _data.profileData.id;
+                                // billingRequest.customerId =
+                                //     bookingResponseModel!.customerId![0].id;
+                                // billingRequest.grossAmount =
+                                //     totalAmount.toStringAsFixed(2);
+                                // billingRequest.status = "Pending";
+                                //
+                                // for (int index = 0;
+                                //     index <
+                                //         _data
+                                //             .profileData!
+                                //             .serviceLists![indexOfServiceName]
+                                //             .subCategory!
+                                //             .length;
+                                //     index++) {
+                                //   var subCategories = SubCategories();
+                                //   subCategories.name = _data
+                                //       .profileData
+                                //       ?.serviceLists?[indexOfServiceName]
+                                //       .subCategory?[index]
+                                //       .name;
+                                //   subCategories.price = _data
+                                //       .profileData
+                                //       ?.serviceLists?[indexOfServiceName]
+                                //       .subCategory?[index]
+                                //       .price;
+                                //   subCategories.count =
+                                //       cartList?[index].count.toString() ?? "";
+                                //   subCategoriesList.add(subCategories);
+                                // }
+                                //
+                                // serviceList.subCategories = subCategoriesList;
+                                // serviceLists.add(serviceList);
+                                //
+                                // billingRequest.serviceLists = serviceLists;
+                                // var response = await ref
+                                //     .read(billingProvider)
+                                //     .updateBilling(
+                                //         billingRequest,
+                                //         bookingResponseModel!.bookingId
+                                //             .toString());
+                                //
+                                // if (response != null) {
+                                //   Navigator.pushNamedAndRemoveUntil(
+                                //     context,
+                                //     '/dashboard',
+                                //     (route) => false,
+                                //   );
+                                // } else {
+                                //   FormHelper.showSimpleAlertDialog(
+                                //     context,
+                                //     Config.appName,
+                                //     "Something went wrong !!",
+                                //     "OK",
+                                //     () {
+                                //       Navigator.of(context).pop();
+                                //     },
+                                //   );
+                                // }
                               }
                             : null,
                         child: const Text(
@@ -481,63 +481,63 @@ class _GenerateBillScreenState
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
                         onPressed: () async {
-                          billingRequest.providerId = _data.profileData.id;
-                          billingRequest.customerId =
-                              bookingResponseModel!.customerId![0].id;
-                          billingRequest.grossAmount =
-                              totalAmount.toStringAsFixed(2);
-                          billingRequest.status = "Pending";
-
-                          for (int index = 0;
-                              index <
-                                  _data
-                                      .profileData!
-                                      .serviceLists![indexOfServiceName]
-                                      .subCategory!
-                                      .length;
-                              index++) {
-                            var subCategories = SubCategories();
-                            subCategories.name = _data
-                                .profileData
-                                ?.serviceLists?[indexOfServiceName]
-                                .subCategory?[index]
-                                .name;
-                            subCategories.price = _data
-                                .profileData
-                                ?.serviceLists?[indexOfServiceName]
-                                .subCategory?[index]
-                                .price;
-                            subCategories.count =
-                                cartList?[index].count.toString() ?? "";
-                            subCategoriesList.add(subCategories);
-                          }
-
-                          serviceList.subCategories = subCategoriesList;
-                          serviceLists.add(serviceList);
-
-                          billingRequest.serviceLists = serviceLists;
-                          var response = await ref
-                              .read(billingProvider)
-                              .generateBilling(billingRequest,
-                                  bookingResponseModel!.bookingId.toString());
-
-                          if (response != null) {
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/dashboard',
-                              (route) => false,
-                            );
-                          } else {
-                            FormHelper.showSimpleAlertDialog(
-                              context,
-                              Config.appName,
-                              "Something went wrong !!",
-                              "OK",
-                              () {
-                                Navigator.of(context).pop();
-                              },
-                            );
-                          }
+                          // billingRequest.providerId = _data.profileData.id;
+                          // billingRequest.customerId =
+                          //     bookingResponseModel!.customerId![0].id;
+                          // billingRequest.grossAmount =
+                          //     totalAmount.toStringAsFixed(2);
+                          // billingRequest.status = "Pending";
+                          //
+                          // for (int index = 0;
+                          //     index <
+                          //         _data
+                          //             .profileData!
+                          //             .serviceLists![indexOfServiceName]
+                          //             .subCategory!
+                          //             .length;
+                          //     index++) {
+                          //   var subCategories = SubCategories();
+                          //   subCategories.name = _data
+                          //       .profileData
+                          //       ?.serviceLists?[indexOfServiceName]
+                          //       .subCategory?[index]
+                          //       .name;
+                          //   subCategories.price = _data
+                          //       .profileData
+                          //       ?.serviceLists?[indexOfServiceName]
+                          //       .subCategory?[index]
+                          //       .price;
+                          //   subCategories.count =
+                          //       cartList?[index].count.toString() ?? "";
+                          //   subCategoriesList.add(subCategories);
+                          // }
+                          //
+                          // serviceList.subCategories = subCategoriesList;
+                          // serviceLists.add(serviceList);
+                          //
+                          // billingRequest.serviceLists = serviceLists;
+                          // var response = await ref
+                          //     .read(billingProvider)
+                          //     .generateBilling(billingRequest,
+                          //         bookingResponseModel!.bookingId.toString());
+                          //
+                          // if (response != null) {
+                          //   Navigator.pushNamedAndRemoveUntil(
+                          //     context,
+                          //     '/dashboard',
+                          //     (route) => false,
+                          //   );
+                          // } else {
+                          //   FormHelper.showSimpleAlertDialog(
+                          //     context,
+                          //     Config.appName,
+                          //     "Something went wrong !!",
+                          //     "OK",
+                          //     () {
+                          //       Navigator.of(context).pop();
+                          //     },
+                          //   );
+                          // }
                         },
                         child: const Text(
                           'GENERATE BILL',

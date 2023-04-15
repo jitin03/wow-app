@@ -11,6 +11,9 @@ import 'package:maven_class/model/booking_status_response.dart';
 import 'package:maven_class/services/shared_service.dart';
 import 'package:maven_class/utils/config.dart';
 
+import '../model/booking_update_status_response.dart';
+import '../model/customer_booking_response.dart';
+
 class BookingService {
   static var client = http.Client();
 
@@ -131,6 +134,30 @@ class BookingService {
     }
   }
 
+  Future<List<CustomerBookingResponse>> getCustomerBooking(String bookingId) async {
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url =
+    Uri.http(Config.apiURL, Config.bookingServiceAPI+'${bookingId}');
+
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+
+    );
+    print(url);
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      return customerBookingResponseFromJson(response.body);
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
   Future<List<BillingResponse>> getCustomerBilling(String bookingId) async {
 
     Map<String, String> requestHeaders = {
@@ -181,7 +208,7 @@ class BookingService {
       throw Exception(response.reasonPhrase);
     }
   }
-  static Future<BookingStatusResponse> updateBookingStatus(
+  static Future<BookingUpdateStatusResponse> updateBookingStatus(
       BookingStatus statuModel, bookingId) async {
     var loginDetails = await SharedService.loginDetails();
 
@@ -202,7 +229,7 @@ class BookingService {
     );
 
     if (response.statusCode == 200) {
-      return bookingStatusResponseFromJson(response.body);
+      return bookingUpdateStatusResponseFromJson(response.body);
     } else {
       throw Exception(response.reasonPhrase);
     }
