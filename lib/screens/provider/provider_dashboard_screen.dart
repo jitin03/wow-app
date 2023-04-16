@@ -43,7 +43,7 @@ class _ProviderDashboardScreenState extends ConsumerState<ProviderDashboardScree
 
   @override
   Widget build(BuildContext context) {
-     final data = ref.watch(bookingDataProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

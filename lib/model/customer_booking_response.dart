@@ -1,46 +1,44 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
 import 'dart:convert';
 
-BookingStatusResponse bookingStatusResponseFromJson(String str) =>
-    BookingStatusResponse.fromJson(json.decode(str));
-
-String bookingStatusResponseToJson(BookingStatusResponse data) =>
+List<CustomerBookingResponse> customerBookingResponseFromJson(String str) =>
+    List<CustomerBookingResponse>.from(
+        json.decode(str).map((x) => CustomerBookingResponse.fromJson(x)));
+String customerBookingResponseToJson(CustomerBookingResponse data) =>
     json.encode(data.toJson());
 
-class BookingStatusResponse {
-  BookingStatusResponse({
-    this.status,
-    this.paymentStatus,
-    this.paymentMode,
-    this.bookingTime,
-    this.bookingAddress,
-    this.grossAmount,
-    this.serviceLists,
-    this.bookingId,
-    this.customerId,
-    this.customerPhoneNo,
-    this.customerName,
-    this.customerEmail,
-    this.providerId,
+class CustomerBookingResponse {
+  CustomerBookingResponse({
+    required this.status,
+    required this.paymentStatus,
+    required this.paymentMode,
+    required this.bookingTime,
+    required this.bookingAddress,
+    required this.grossAmount,
+    required this.serviceLists,
+    required this.bookingId,
+    required this.customerId,
+    required this.customerPhoneNo,
+    required this.customerEmail,
+    required this.customerName,
+    required this.providerId,
+    required this.providerName,
   });
-  String? status;
-  String? paymentStatus;
-  String? paymentMode;
-  String? bookingTime;
-  String? bookingAddress;
-  String? grossAmount;
-  List<ServiceLists>? serviceLists;
-  num? bookingId;
-  List<String>? customerId;
-  List<num>? customerPhoneNo;
-  List<String>? customerEmail;
-  List<String>? customerName;
-  List<String>? providerId;
+  late final String status;
+  late final String paymentStatus;
+  late final String paymentMode;
+  late final String bookingTime;
+  late final String bookingAddress;
+  late final String grossAmount;
+  late final List<ServiceLists> serviceLists;
+  late final num bookingId;
+  late final List<String> customerId;
+  late final List<num> customerPhoneNo;
+  late final List<String> customerEmail;
+  late final List<String> customerName;
+  late final List<String> providerId;
+  late final List<String> providerName;
 
-  BookingStatusResponse.fromJson(Map<String, dynamic> json){
+  CustomerBookingResponse.fromJson(Map<String, dynamic> json){
     status = json['status'];
     paymentStatus = json['paymentStatus'];
     paymentMode = json['paymentMode'];
@@ -51,9 +49,10 @@ class BookingStatusResponse {
     bookingId = json['bookingId'];
     customerId = List.castFrom<dynamic, String>(json['customerId']);
     customerPhoneNo = List.castFrom<dynamic, num>(json['customerPhoneNo']);
-    customerName = List.castFrom<dynamic, String>(json['customerName']);
     customerEmail = List.castFrom<dynamic, String>(json['customerEmail']);
+    customerName = List.castFrom<dynamic, String>(json['customerName']);
     providerId = List.castFrom<dynamic, String>(json['providerId']);
+    providerName = List.castFrom<dynamic, String>(json['providerName']);
   }
 
   Map<String, dynamic> toJson() {
@@ -64,26 +63,27 @@ class BookingStatusResponse {
     _data['bookingTime'] = bookingTime;
     _data['bookingAddress'] = bookingAddress;
     _data['grossAmount'] = grossAmount;
-    _data['serviceLists'] = serviceLists!.map((e)=>e.toJson()).toList();
+    _data['serviceLists'] = serviceLists.map((e)=>e.toJson()).toList();
     _data['bookingId'] = bookingId;
     _data['customerId'] = customerId;
     _data['customerPhoneNo'] = customerPhoneNo;
     _data['customerEmail'] = customerEmail;
     _data['customerName'] = customerName;
     _data['providerId'] = providerId;
+    _data['providerName'] = providerName;
     return _data;
   }
 }
 
 class ServiceLists {
   ServiceLists({
-    this.name,
-    this.subCategories,
-    this.price,
+    required this.name,
+    required this.subCategories,
+    required this.price,
   });
-  String? name;
-  List<SubCategories>? subCategories;
-  num? price;
+  late final String name;
+  late final List<SubCategories> subCategories;
+  late final num price;
 
   ServiceLists.fromJson(Map<String, dynamic> json){
     name = json['name'];
@@ -94,7 +94,7 @@ class ServiceLists {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['name'] = name;
-    _data['subCategories'] = subCategories!.map((e)=>e.toJson()).toList();
+    _data['subCategories'] = subCategories.map((e)=>e.toJson()).toList();
     _data['price'] = price;
     return _data;
   }
@@ -102,13 +102,13 @@ class ServiceLists {
 
 class SubCategories {
   SubCategories({
-    this.name,
-    this.price,
-    this.count,
+    required this.name,
+    required this.price,
+    required this.count,
   });
-  String? name;
-  num? price;
-  String? count;
+  late final String name;
+  late final num price;
+  late final String count;
 
   SubCategories.fromJson(Map<String, dynamic> json){
     name = json['name'];

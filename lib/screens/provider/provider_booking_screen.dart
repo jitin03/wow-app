@@ -10,6 +10,9 @@ import 'package:maven_class/utils/config.dart';
 import 'package:maven_class/utils/images.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
+import '../../model/booking_status_response.dart';
+import 'customer_order.dart';
+
 class ProviderBookings extends ConsumerWidget {
   const ProviderBookings({Key? key}) : super(key: key);
 
@@ -38,9 +41,7 @@ class ProviderBookings extends ConsumerWidget {
                           child: ListView.builder(
                               itemCount: bookings.length,
                               itemBuilder: (context, index) {
-                                List<CustomerId>? customers =
-                                    bookings[index].customerId;
-                                print(customers!.length);
+
 
                                 if (bookings[index].status == "New") {
                                   return ReusableCard(
@@ -55,7 +56,7 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -234,8 +235,8 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0]
+                                                        ,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -271,12 +272,56 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0]
+                                                        .toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
                                                   ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          height: 2,
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  // Navigator.push(
+                                                  //     context,
+                                                  //     MaterialPageRoute(
+                                                  //         builder:
+                                                  //             (context) {
+                                                  //           return CustomerOrderReviewScreen(
+                                                  //               booking:
+                                                  //              bookings![index],
+                                                  //               serviceName: bookings[
+                                                  //               index]
+                                                  //                   .serviceLists![
+                                                  //               0]
+                                                  //                   .name!,
+                                                  //               providername:
+                                                  //               bookings[index]
+                                                  //                   .providerName![0]);
+                                                  //         }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
                                                 ),
                                               ),
                                             ],
@@ -314,8 +359,7 @@ class ProviderBookings extends ConsumerWidget {
                                                       showDialogFunc(
                                                         context,
                                                         bookings[index]
-                                                            .customerId![0]
-                                                            .name,
+                                                            .customerName![0],
                                                         bookings[index]
                                                             .bookingAddress,
                                                         bookings[index]
@@ -494,7 +538,7 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -673,8 +717,7 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -710,12 +753,55 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0].toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
                                                   ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          height: 2,
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  // Navigator.push(
+                                                  //     context,
+                                                  //     MaterialPageRoute(
+                                                  //         builder:
+                                                  //             (context) {
+                                                  //           return CustomerOrderReviewScreen(
+                                                  //               booking:
+                                                  //               bookings![index],
+                                                  //               serviceName: bookings[
+                                                  //               index]
+                                                  //                   .serviceLists![
+                                                  //               0]
+                                                  //                   .name!,
+                                                  //               providername:
+                                                  //               bookings[index]
+                                                  //                   .providerName![0]);
+                                                  //         }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
                                                 ),
                                               ),
                                             ],
@@ -753,8 +839,7 @@ class ProviderBookings extends ConsumerWidget {
                                                       showDialogFunc(
                                                           context,
                                                           bookings[index]
-                                                              .customerId![0]
-                                                              .name,
+                                                              .customerName![0],
                                                           bookings[index]
                                                               .bookingAddress,
                                                           bookings[index]
@@ -930,7 +1015,7 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -1104,8 +1189,7 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1141,12 +1225,56 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0]
+                                                        .toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
                                                   ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          height: 2,
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  // Navigator.push(
+                                                  //     context,
+                                                  //     MaterialPageRoute(
+                                                  //         builder:
+                                                  //             (context) {
+                                                  //           return CustomerOrderReviewScreen(
+                                                  //               booking:
+                                                  //               bookings![index],
+                                                  //               serviceName: bookings[
+                                                  //               index]
+                                                  //                   .serviceLists![
+                                                  //               0]
+                                                  //                   .name!,
+                                                  //               providername:
+                                                  //               bookings[index]
+                                                  //                   .providerName![0]);
+                                                  //         }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
                                                 ),
                                               ),
                                             ],
@@ -1310,7 +1438,7 @@ class ProviderBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -1486,8 +1614,7 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1523,8 +1650,7 @@ class ProviderBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0].toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1537,6 +1663,7 @@ class ProviderBookings extends ConsumerWidget {
                                         SizedBox(
                                           height: 10,
                                         ),
+
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
                                           child: Row(
@@ -1616,9 +1743,7 @@ class ProviderBookings extends ConsumerWidget {
                                                               .requestOtp("+" +
                                                                   bookings[
                                                                           index]
-                                                                      .customerId![
-                                                                          0]
-                                                                      .phonenumber!
+                                                                      .customerPhoneNo![0]
                                                                       .toString());
 
                                                           if (response !=
@@ -1665,6 +1790,50 @@ class ProviderBookings extends ConsumerWidget {
                                             ],
                                           ),
                                         ),
+                                        Divider(
+                                          height: 2,
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  // Navigator.push(
+                                                  //     context,
+                                                  //     MaterialPageRoute(
+                                                  //         builder:
+                                                  //             (context) {
+                                                  //           return CustomerOrderReviewScreen(
+                                                  //               booking:
+                                                  //               bookings![index],
+                                                  //               serviceName: bookings[
+                                                  //               index]
+                                                  //                   .serviceLists![
+                                                  //               0]
+                                                  //                   .name!,
+                                                  //               providername:
+                                                  //               bookings[index]
+                                                  //                   .providerName![0]);
+                                                  //         }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(7.0),
                                           child: Divider(
@@ -1672,51 +1841,7 @@ class ProviderBookings extends ConsumerWidget {
                                             thickness: 1.8,
                                           ),
                                         ),
-                                        Container(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  await Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LaundryGenerateBillScreen(
-                                                                bookingResponseModel:
-                                                                    bookings[
-                                                                        index]),
-                                                      ));
-                                                },
-                                                child: Container(
-                                                    child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "Generate bill",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Work Sans',
-                                                          fontSize: 18,
-                                                          color: primaryColor,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    const ImageIcon(
-                                                      AssetImage(
-                                                          ic_edit_service),
-                                                      color: primaryColor,
-                                                      size: 15,
-                                                    )
-                                                  ],
-                                                )),
-                                              )
-                                            ],
-                                          ),
-                                        ),
+
                                         SizedBox(
                                           height: 20,
                                         ),

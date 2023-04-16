@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maven_class/model/all_booking_response.dart';
 import 'package:maven_class/model/billing_request_model.dart';
 import 'package:maven_class/model/billing_response_model.dart';
 import 'package:maven_class/model/booking_model.dart';
@@ -19,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/booking_status.dart';
 import '../model/booking_status_response.dart';
+import '../model/customer_booking_response.dart';
 import '../model/update_booking_request.dart';
 import '../model/update_booking_status.dart';
 
@@ -43,6 +45,11 @@ final bookingDataProvider =
 
 
 
+final bookingDetailDataProvider = FutureProvider.autoDispose
+    .family<List<CustomerBookingResponse>, String>((ref, id) async {
+  return ref.watch(bookingServiceProvider).getCustomerBooking(id);
+});
+
 // Billing Screen provider
 final billingScreenDataProvider =
 FutureProvider<ProviderHomeData>((ref) async {
@@ -60,7 +67,7 @@ final providerProfileDataProvider = FutureProvider<ProviderDetail>((ref) async {
   return ref.watch(providerServiceProvider).getProviderProfile();
 });
 
-final allbookingProvider = FutureProvider<List<BookingResponseModel>>((ref) async {
+final allbookingProvider = FutureProvider<List<AllBookingResponse>>((ref) async {
   return ref.watch(bookingServiceProvider).getAllBooking();
 });
 

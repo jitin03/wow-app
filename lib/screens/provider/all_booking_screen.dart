@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maven_class/model/all_booking_response.dart';
 import 'package:maven_class/model/booking_model.dart';
 import 'package:maven_class/model/booking_status.dart';
 import 'package:maven_class/provider/data_provider.dart';
@@ -9,6 +10,8 @@ import 'package:maven_class/services/booking_service.dart';
 import 'package:maven_class/utils/config.dart';
 import 'package:maven_class/utils/images.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
+
+import 'customer_order.dart';
 
 class AllBookings extends ConsumerWidget {
   const AllBookings({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class AllBookings extends ConsumerWidget {
       child: Container(
         child: _data.when(
           data: (_data) {
-            List<BookingResponseModel> bookings = _data.map((e) => e).toList();
+            List<AllBookingResponse> bookings = _data.map((e) => e).toList();
 
             return (bookings.length > 0)
                 ? Column(
@@ -38,9 +41,6 @@ class AllBookings extends ConsumerWidget {
                           child: ListView.builder(
                               itemCount: bookings.length,
                               itemBuilder: (context, index) {
-                                List<CustomerId>? customers =
-                                    bookings[index].customerId;
-                                print(customers!.length);
 
                                 if (bookings[index].status == "New") {
                                   return ReusableCard(
@@ -55,7 +55,7 @@ class AllBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -233,9 +233,7 @@ class AllBookings extends ConsumerWidget {
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
                                                   child: Text(
-                                                    bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                    bookings[index].customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -271,12 +269,52 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0].toInt().toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
                                                   ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) {
+                                                            return CustomerOrderReviewScreen(
+                                                                booking:
+                                                                bookings![index],
+                                                                serviceName: bookings[
+                                                                index]
+                                                                    .serviceLists![
+                                                                0]
+                                                                    .name!,
+                                                                providername:
+                                                                bookings[index]
+                                                                    .providerName![0]);
+                                                          }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
                                                 ),
                                               ),
                                             ],
@@ -314,8 +352,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .providerId![0]
-                                                        .name!,
+                                                        .providerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -352,8 +389,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .providerId![0]
-                                                        .address![0].address1.toString(),
+                                                        .providerAddress![0][0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -389,8 +425,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]!
-                                                        .providerId![0]
-                                                        .phonenumber!.toInt().toString(),
+                                                        .providerPhoneNo![0].toInt().toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -612,7 +647,7 @@ class AllBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -791,8 +826,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -828,8 +862,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0].toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -871,8 +904,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .providerId![0]
-                                                        .name!,
+                                                        .providerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1091,7 +1123,7 @@ class AllBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -1265,8 +1297,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1302,8 +1333,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0].toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1346,8 +1376,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .providerId![0]
-                                                        .name!,
+                                                        .providerPhoneNo![0].toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1515,7 +1544,7 @@ class AllBookings extends ConsumerWidget {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  bookings[index].serviceType!,
+                                                  bookings[index].serviceLists![0].name!,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -1691,8 +1720,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: Text(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .name!,
+                                                        .customerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1728,8 +1756,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerId![0]
-                                                        .phonenumber.toString(),
+                                                        .customerPhoneNo![0].toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1772,8 +1799,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .providerId![0]
-                                                        .name!,
+                                                        .providerName![0],
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1862,9 +1888,7 @@ class AllBookings extends ConsumerWidget {
                                                               .requestOtp("+" +
                                                                   bookings[
                                                                           index]
-                                                                      .customerId![
-                                                                          0]
-                                                                      .phonenumber!
+                                                                      .customerPhoneNo![0]
                                                                       .toString());
 
                                                           if (response !=
@@ -2055,218 +2079,218 @@ class AllBookings extends ConsumerWidget {
   }
 }
 
-showDialogFunc(context, serviceType, customerAddress, bookingDateAndTime,
-    paymentStatus, confirmation) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      return Center(
-        child: Material(
-          type: MaterialType.transparency,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            // padding: EdgeInsets.all(15),
-            height: MediaQuery.of(context).size.height / 1.6,
-            width: MediaQuery.of(context).size.width * 0.7,
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Booking Summary",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        CloseButton(color: Colors.white),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Container(
-                      child: ListView(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                serviceType,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0XFF1C1F34),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Divider(
-                            height: 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Address",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0XFF1C1F34),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  customerAddress,
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Divider(
-                            height: 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Date",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0XFF1C1F34),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                bookingDateAndTime,
-                                // DateFormat('dd MMM, EEE, '
-                                //         'yyyy')
-                                //     .format(DateTime.parse(bookingDateAndTime)),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Divider(
-                            height: 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Time",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0XFF1C1F34),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                bookingDateAndTime,
-                                // DateFormat('hh:mm aaa')
-                                //     .format(DateTime.parse(bookingDateAndTime)),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Divider(
-                            height: 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Payment Status",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0XFF1C1F34),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                paymentStatus,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 50,
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0Xff5F60B9),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                // Background color
-                              ),
-                              onPressed: confirmation,
-                              child: const Padding(
-                                padding: EdgeInsets.all(15.0),
-                                child: Text(
-                                  "CONFIRM",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+// showDialogFunc(context, serviceType, customerAddress, bookingDateAndTime,
+//     paymentStatus, confirmation) {
+//   return showDialog(
+//     context: context,
+//     builder: (context) {
+//       return Center(
+//         child: Material(
+//           type: MaterialType.transparency,
+//           child: Container(
+//             decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(10),
+//               color: Colors.white,
+//             ),
+//             // padding: EdgeInsets.all(15),
+//             height: MediaQuery.of(context).size.height / 1.6,
+//             width: MediaQuery.of(context).size.width * 0.7,
+//             child: Column(
+//               children: [
+//                 Container(
+//                   width: double.infinity,
+//                   decoration: BoxDecoration(
+//                     color: primaryColor,
+//                   ),
+//                   child: Padding(
+//                     padding:
+//                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       children: [
+//                         Text(
+//                           "Booking Summary",
+//                           style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 16,
+//                               fontWeight: FontWeight.bold),
+//                         ),
+//                         CloseButton(color: Colors.white),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(15.0),
+//                     child: Container(
+//                       child: ListView(
+//                         children: <Widget>[
+//                           SizedBox(
+//                             height: 10,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Text(
+//                                 serviceType,
+//                                 style: TextStyle(
+//                                   fontSize: 16,
+//                                   color: Color(0XFF1C1F34),
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(
+//                             height: 10,
+//                           ),
+//                           Divider(
+//                             height: 2,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Expanded(
+//                                 child: Text(
+//                                   "Address",
+//                                   style: TextStyle(
+//                                     fontSize: 16,
+//                                     color: Color(0XFF1C1F34),
+//                                     fontWeight: FontWeight.bold,
+//                                   ),
+//                                 ),
+//                               ),
+//                               Expanded(
+//                                 child: Text(
+//                                   customerAddress,
+//                                   style: TextStyle(
+//                                     fontSize: 11,
+//                                     color: Colors.grey,
+//                                     fontWeight: FontWeight.bold,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(
+//                             height: 10,
+//                           ),
+//                           Divider(
+//                             height: 2,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Text(
+//                                 "Date",
+//                                 style: TextStyle(
+//                                   fontSize: 16,
+//                                   color: Color(0XFF1C1F34),
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                               Text(
+//                                 bookingDateAndTime,
+//                                 // DateFormat('dd MMM, EEE, '
+//                                 //         'yyyy')
+//                                 //     .format(DateTime.parse(bookingDateAndTime)),
+//                                 style: TextStyle(
+//                                   fontSize: 14,
+//                                   color: Colors.grey,
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(
+//                             height: 10,
+//                           ),
+//                           Divider(
+//                             height: 2,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Text(
+//                                 "Time",
+//                                 style: TextStyle(
+//                                   fontSize: 16,
+//                                   color: Color(0XFF1C1F34),
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                               Text(
+//                                 bookingDateAndTime,
+//                                 // DateFormat('hh:mm aaa')
+//                                 //     .format(DateTime.parse(bookingDateAndTime)),
+//                                 style: TextStyle(
+//                                   fontSize: 14,
+//                                   color: Colors.grey,
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(
+//                             height: 10,
+//                           ),
+//                           Divider(
+//                             height: 2,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Text(
+//                                 "Payment Status",
+//                                 style: TextStyle(
+//                                   fontSize: 16,
+//                                   color: Color(0XFF1C1F34),
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                               Text(
+//                                 paymentStatus,
+//                                 style: TextStyle(
+//                                   fontSize: 14,
+//                                   color: Colors.grey,
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           SizedBox(
+//                             height: 50,
+//                           ),
+//                           ElevatedButton(
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Color(0Xff5F60B9),
+//                                 shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(10.0)),
+//                                 // Background color
+//                               ),
+//                               onPressed: confirmation,
+//                               child: const Padding(
+//                                 padding: EdgeInsets.all(15.0),
+//                                 child: Text(
+//                                   "CONFIRM",
+//                                   style: TextStyle(color: Colors.white),
+//                                 ),
+//                               )),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
 
 showDeclineFunc(context, confirmDecline) {
   return showDialog(
