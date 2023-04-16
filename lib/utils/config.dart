@@ -12,7 +12,7 @@ class Config {
   static const providerProfileAPI="api/v1/providers";
   static const providerProfileByPhoneNoAPI="api/v1/providers/profile";
   static const bookingServiceAPI='/api/v1/booking/';
-
+  static const notificationEndPoint='/api/v1/notifications';
 
 
   static const List<String> appBarTitles = [

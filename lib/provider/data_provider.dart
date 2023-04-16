@@ -20,8 +20,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/booking_status.dart';
 import '../model/booking_status_response.dart';
 import '../model/customer_booking_response.dart';
+import '../model/notification_response.dart';
 import '../model/update_booking_request.dart';
 import '../model/update_booking_status.dart';
+import '../services/notifications_service.dart';
 
 final sharedPreferences =
     FutureProvider((_) async => await SharedPreferences.getInstance());
@@ -41,7 +43,10 @@ final bookingDataProvider =
   return ref.watch(bookingServiceProvider).getProviderBooking(resp.value!.id!);
 });
 
-
+final providerNotificationDataProvider = FutureProvider.autoDispose
+    .family<List<NotificationResponse>, String>((ref, id) async {
+  return ref.watch(notificationServiceProvider).getBookingNotification(id);
+});
 
 final bookingDetailDataProvider = FutureProvider.autoDispose
     .family<List<CustomerBookingResponse>, String>((ref, id) async {
