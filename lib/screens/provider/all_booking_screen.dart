@@ -915,6 +915,47 @@ class AllBookings extends ConsumerWidget {
                                           ),
                                         ),
                                         Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) {
+                                                            return CustomerOrderReviewScreen(
+                                                                booking:
+                                                                bookings![index],
+                                                                serviceName: bookings[
+                                                                index]
+                                                                    .serviceLists![
+                                                                0]
+                                                                    .name!,
+                                                                providername:
+                                                                bookings[index]
+                                                                    .providerName![0]);
+                                                          }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
                                           padding: const EdgeInsets.all(7.0),
                                           child: Divider(
                                             height: 2,
@@ -1381,6 +1422,47 @@ class AllBookings extends ConsumerWidget {
                                                         color: Colors.black,
                                                         fontSize: 16),
                                                   ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) {
+                                                            return CustomerOrderReviewScreen(
+                                                                booking:
+                                                                bookings![index],
+                                                                serviceName: bookings[
+                                                                index]
+                                                                    .serviceLists![
+                                                                0]
+                                                                    .name!,
+                                                                providername:
+                                                                bookings[index]
+                                                                    .providerName![0]);
+                                                          }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
                                                 ),
                                               ),
                                             ],
@@ -1932,6 +2014,47 @@ class AllBookings extends ConsumerWidget {
                                                       ),
                                                     )
                                                   : Container(),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) {
+                                                            return CustomerOrderReviewScreen(
+                                                                booking:
+                                                                bookings![index],
+                                                                serviceName: bookings[
+                                                                index]
+                                                                    .serviceLists![
+                                                                0]
+                                                                    .name!,
+                                                                providername:
+                                                                bookings[index]
+                                                                    .providerName![0]);
+                                                          }));
+                                                },
+                                                child: Text(
+                                                  "ORDER PREVIEW",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                      'Work Sans',
+                                                      color:
+                                                      primaryColor),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),

@@ -15,6 +15,7 @@ import 'package:maven_class/utils/images.dart';
 import '../../model/all_booking_response.dart';
 import '../../model/booking_model.dart';
 import '../../model/customer_booking_response.dart';
+import '../../model/notification_response.dart';
 
 enum PaymentOptions { Cash_only, online }
 
@@ -55,7 +56,8 @@ class _GenerateBillScreenState
 
     final _billing_data = ref
         .watch(bookingDetailDataProvider(widget.booking.bookingId.toString()));
-
+    var _notifications = ref.watch(
+        providerNotificationDataProvider(widget.booking.bookingId.toString()));
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -73,6 +75,27 @@ class _GenerateBillScreenState
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
                 color: Colors.white)),
+        actions: <Widget>[
+          InkWell(
+            onTap: () async {
+              ref.invalidate(providerNotificationDataProvider);
+              print("asdasd");
+              _bottomSheetMore(
+                  context, widget.booking.bookingId.toString(), ref);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: Text(
+                'Check Status',
+                style: TextStyle(
+                    fontFamily: 'Work Sans',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Colors.white),
+              ),
+            ),
+          ),
+        ],
         backgroundColor: primaryColor,
         titleTextStyle: TextStyle(
             color: Colors.white,
@@ -378,4 +401,113 @@ class _GenerateBillScreenState
       ),
     );
   }
+}
+void _bottomSheetMore(BuildContext context, String bookingId, WidgetRef ref) {
+  int _currentStep = 0;
+  var _notifications =
+  ref.watch(providerNotificationDataProvider(bookingId));
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled:true,
+    enableDrag: true,
+    builder: (builder) {
+
+      print("asdasd");
+      return StatefulBuilder(builder: (context, setState) {
+        return Container(
+          height: MediaQuery.of(context).size.height*2/5,
+          padding: EdgeInsets.only(
+            left: 5.0,
+            right: 5.0,
+            top: 5.0,
+            bottom: 5.0,
+          ),
+          decoration: new BoxDecoration(
+              color: Colors.white,
+              borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(10.0),
+                  topRight: const Radius.circular(10.0))),
+          child: _notifications.when(
+            data: (_data) {
+              List<NotificationResponse> notifications = _data;
+              return Wrap(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Track Order",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontFamily: 'Work Sans'),
+                                ),
+                                Text(
+                                  "ID: #" + bookingId,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontFamily: 'Work Sans',
+                                      color: primaryColor),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        new Divider(
+                          height: 10.0,
+                        ),
+                        Stepper(
+                          steps: notifications.length>0? notifications.map((notification) {
+                            return Step(
+                              content: Container(),
+                              title: FittedBox(
+                                child: Column(
+                                  children: [
+                                    Text(notification.message),
+                                    Text(DateFormat('hh:mm a dd MMM').format(
+                                        DateTime.parse(notification.createTime!))),
+                                  ],
+                                ),
+                              ),
+                              isActive: _currentStep >= 0,
+                              state: _currentStep >= 0
+                                  ? StepState.complete
+                                  : StepState.disabled,
+                            );
+                          }).toList() : <Step>[
+                            Step(
+                              title: const Text('History is missing for this order'),
+                              content: Container(),
+                              isActive: _currentStep >= 0,
+                              state: _currentStep >= 0
+                                  ? StepState.error
+                                  : StepState.disabled,
+                            ),
+
+                          ],
+                          type: StepperType.vertical,
+                          controlsBuilder: (context, controller) {
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+            error: (err, s) => Text(err.toString()),
+            loading: () => Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      });
+    },
+  );
 }
