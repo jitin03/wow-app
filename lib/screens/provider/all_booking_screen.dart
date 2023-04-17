@@ -1838,7 +1838,7 @@ class AllBookings extends ConsumerWidget {
                                                       left: 16, right: 5),
                                                   child: SelectableText(
                                                     bookings[index]
-                                                        .customerPhoneNo![0].toString(),
+                                                        .customerPhoneNo![0].toInt().toString(),
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16),
@@ -1970,8 +1970,7 @@ class AllBookings extends ConsumerWidget {
                                                               .requestOtp("+" +
                                                                   bookings[
                                                                           index]
-                                                                      .customerPhoneNo![0]
-                                                                      .toString());
+                                                              .customerPhoneNo![0].toInt().toString());
 
                                                           if (response !=
                                                               null) {
