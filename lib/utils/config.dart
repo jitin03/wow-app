@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Config {
   static const String appName = "Wow!";
-  static const String apiURL = '10.0.2.2:8989'; //PROD_URL
-  // static const String apiURL = 'a3992b62ac3fa47beb5687155c17e860-274100500.us-east-1.elb.amazonaws.com:80'; //PROD_URL
+  // static const String apiURL = '10.0.2.2:8989'; //PROD_URL
+  static const String apiURL = 'a3992b62ac3fa47beb5687155c17e860-274100500.us-east-1.elb.amazonaws.com:80'; //PROD_URL
   static const loginAPI = "/api/v1/auth/login";
   static const requestOtpAPI = "/api/v1/auth/requestOtp";
   static const verifyOtpAPI = "/api/v1/auth/verifyOtp/";
@@ -32,7 +32,7 @@ const primaryColor = Color(0xFF5F60B9);
 
 const DOMAIN_URL = ''; // Don't add slash at the end of the url
 const BASE_URL = "$DOMAIN_URL/api/";
-
+const AC_REPAIR_CHARGES =280;
 const IOS_LINK_FOR_PARTNER =
     "https://apps.apple.com/in/app/handyman-provider-app/id1596025324";
 

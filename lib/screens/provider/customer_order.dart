@@ -19,6 +19,7 @@ import '../../model/notification_response.dart';
 enum PaymentOptions { Cash_only, online }
 
 class CustomerOrderReviewScreen extends ConsumerStatefulWidget {
+
   final BookingResponseModel booking;
   final String serviceName;
   final String providername;
@@ -36,6 +37,8 @@ class CustomerOrderReviewScreen extends ConsumerStatefulWidget {
 
 class _GenerateBillScreenState
     extends ConsumerState<CustomerOrderReviewScreen> {
+  late int discountRate = 0;
+  String apply_coupon = "Apply Coupon";
   int value = 0;
   bool isSelect_OnlinePaymentSelected = false;
   bool isSelect_CashOnly = false;
@@ -304,14 +307,26 @@ class _GenerateBillScreenState
                               const Divider(),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Price Details",
+                          style: TextStyle(
+                              fontFamily: 'Work Sans',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
                       Container(
                         padding: const EdgeInsets.all(16),
                         margin: const EdgeInsets.only(top: 8),
                         decoration: BoxDecoration(
-                            border: Border.all(color: primaryColor),
-                            shape: BoxShape.rectangle,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(4))),
+                          color: Color(0XFFF6F7F9),
+                          border: Border.all(
+                            color: Color(0XFF6F7F9),
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -330,21 +345,89 @@ class _GenerateBillScreenState
                                 Text("\u{20B9}00.00"),
                               ],
                             ),
+                            const Divider(color: primaryColor),
+
+                            (discountRate != null)
+                                ? Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('Discount '),
+                                    Text(
+                                      '(${_data[0].discountRate}% off)',
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontFamily: 'Work Sans',
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                    "- \u{20B9}${_data[0].discountPrice.toStringAsFixed(2)}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Work Sans',
+                                        color: Colors.green))
+                              ],
+                            )
+                                : Container(),
+                            const Divider(color: primaryColor),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Coupon",
+                                  style: TextStyle(
+                                    fontFamily: 'Work Sans',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _data[0].couponCode,
+                                        style: TextStyle(
+                                            fontFamily: 'Work Sans',
+                                            fontSize: 14,
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            widget.serviceName.contains("AC Repair")
+                                ? Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text("AC Repair Visiting Charge"),
+                                Text("\u{20B9} ${AC_REPAIR_CHARGES}"),
+                              ],
+                            )
+                                : Container(),
                             const SizedBox(height: 8),
-                            // Row(
-                            //   mainAxisAlignment:
-                            //       MainAxisAlignment.spaceBetween,
-                            //   children: [
-                            //     const Text("GST (18%)"),
-                            //     Text(
-                            //         "\u{20B9}${(double.parse(_data[0].grossAmount) * 0.18).toStringAsFixed(2)}",
-                            //         style: const TextStyle(
-                            //             fontWeight: FontWeight.bold,
-                            //             color: primaryColor))
-                            //
-                            //     // Text("\u{20B9}${(totalAmount * 0.18).toStringAsFixed(2)}")
-                            //   ],
-                            // ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("GST (18%)"),
+                                Text(
+                                    "\u{20B9}${_data[0].gstPrice.toStringAsFixed(2)}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: primaryColor))
+
+                                // Text("\u{20B9}${(totalAmount * 0.18).toStringAsFixed(2)}")
+                              ],
+                            ),
                             const SizedBox(height: 8),
                             const Divider(color: primaryColor),
                             const SizedBox(height: 8),
@@ -358,18 +441,52 @@ class _GenerateBillScreenState
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 ),
-                                // Text(
-                                //     "\u{20B9}${(double.parse(_data[0].grossAmount) + double.parse(_data[0].grossAmount) * 0.18).toStringAsFixed(2)}",
-                                //     style: const TextStyle(
-                                //         fontWeight: FontWeight.bold,
-                                //         color: primaryColor))
-                                Text(
-                                    "\u{20B9}${(double.parse(_data[0].grossAmount!))}",
+                                widget.serviceName.contains("AC Repair")
+                                    ? Text(
+                                    "\u{20B9}${(double.parse(_data[0].grossAmount) + AC_REPAIR_CHARGES - (double.parse(_data[0].grossAmount) * discountRate / 100)).toStringAsFixed(2)}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: primaryColor))
+                                    : Text(
+                                    "\u{20B9}${(double.parse(_data[0].grossAmount!)) - (double.parse(_data[0].grossAmount) * discountRate / 100)}",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: primaryColor))
                               ],
                             ),
+                            const SizedBox(height: 8),
+                            (_data[0].paymentStatus == 'Paid')
+                                ? Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                    color: Colors.greenAccent
+                                        .withOpacity(0.5),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20.0, right: 20),
+                                    child: Text(
+                                      _data[0].paymentStatus!,
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontFamily: 'Work Sans',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                ),
+
+                              ],
+                            )
+                                : Container()
                           ],
                         ),
                       )

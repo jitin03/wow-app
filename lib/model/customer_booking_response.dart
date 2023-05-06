@@ -22,6 +22,10 @@ class CustomerBookingResponse {
     required this.customerName,
     required this.providerId,
     required this.providerName,
+    required this.discountRate,
+    required this.discountPrice,
+    required this.gstPrice,
+    required this.couponCode,
   });
   late final String status;
   late final String paymentStatus;
@@ -37,6 +41,10 @@ class CustomerBookingResponse {
   late final List<String> customerName;
   late final List<String> providerId;
   late final List<String> providerName;
+  late final num discountRate;
+  late final num discountPrice;
+  late final num gstPrice;
+  late final String couponCode;
 
   CustomerBookingResponse.fromJson(Map<String, dynamic> json){
     status = json['status'];
@@ -45,6 +53,10 @@ class CustomerBookingResponse {
     bookingTime = json['bookingTime'];
     bookingAddress = json['bookingAddress'];
     grossAmount = json['grossAmount'];
+    discountRate = json['discountRate'];
+    discountPrice = json['discountPrice'];
+    gstPrice = json['gstPrice'];
+    couponCode = json['couponCode'];
     serviceLists = List.from(json['serviceLists']).map((e)=>ServiceLists.fromJson(e)).toList();
     bookingId = json['bookingId'];
     customerId = List.castFrom<dynamic, String>(json['customerId']);
@@ -71,6 +83,10 @@ class CustomerBookingResponse {
     _data['customerName'] = customerName;
     _data['providerId'] = providerId;
     _data['providerName'] = providerName;
+    _data['discountRate'] = discountRate;
+    _data['discountPrice'] = discountPrice;
+    _data['gstPrice'] = gstPrice;
+    _data['couponCode'] = couponCode;
     return _data;
   }
 }
