@@ -1946,9 +1946,9 @@ class AllBookings extends ConsumerWidget {
                                                 ),
                                               ),
                                               bookings[index].paymentMode ==
-                                                          'Cash' &&
+                                                          'CASH' &&
                                                       bookings[index].status !=
-                                                          'Done'
+                                                          'Pending'
                                                   ? Expanded(
                                                       flex: 1,
                                                       child: ElevatedButton(

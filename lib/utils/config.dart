@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Config {
   static const String appName = "Wow!";
-  static const String apiURL = '10.0.2.2:8989'; //PROD_URL
-  // static const String apiURL = 'a3992b62ac3fa47beb5687155c17e860-274100500.us-east-1.elb.amazonaws.com:80'; //PROD_URL
+  // static const String apiURL = '10.0.2.2:8989'; //PROD_URL
+  static const String apiURL = 'a3992b62ac3fa47beb5687155c17e860-274100500.us-east-1.elb.amazonaws.com:80'; //PROD_URL
   static const loginAPI = "/api/v1/auth/login";
   static const requestOtpAPI = "/api/v1/auth/requestOtp";
   static const verifyOtpAPI = "/api/v1/auth/verifyOtp/";
