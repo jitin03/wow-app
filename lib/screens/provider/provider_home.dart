@@ -92,13 +92,13 @@ class ProviderHome extends ConsumerWidget {
                                       width: 10,
                                     ),
                                     InkWell(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return ProviderServices();
-                                        }));
-                                      },
+                                      // onTap: () {
+                                      //   Navigator.push(context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) {
+                                      //     return ProviderServices();
+                                      //   }));
+                                      // },
                                       child: const ImageIcon(
                                         AssetImage(ic_edit_service),
                                         color: primaryColor,

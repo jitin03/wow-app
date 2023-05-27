@@ -1689,20 +1689,8 @@ class ProviderBookings extends ConsumerWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.only(
                                                       left: 16, right: 5),
-                                                  child: bookings[index]
-                                                              .status ==
-                                                          'Done'
-                                                      ? Text(
-                                                          "Paid",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.green,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              fontFamily:
-                                                                  'Work Sans'),
+                                                  child: bookings[index].status == 'Done'
+                                                      ? Text("Paid", style: TextStyle(color: Colors.green, fontSize: 16, fontWeight: FontWeight.w800, fontFamily: 'Work Sans'),
                                                         )
                                                       : Text(
                                                           "Pending",
@@ -1721,8 +1709,7 @@ class ProviderBookings extends ConsumerWidget {
                                               bookings[index].paymentMode ==
                                                           'Cash' &&
                                                       bookings[index].status !=
-                                                          'Done'
-                                                  ? Expanded(
+                                                          'Pending' ? Expanded(
                                                       flex: 1,
                                                       child: ElevatedButton(
                                                         style: ElevatedButton
@@ -1737,43 +1724,64 @@ class ProviderBookings extends ConsumerWidget {
                                                           // Background color
                                                         ),
                                                         onPressed: () async {
-                                                          var response = await ref
-                                                              .read(
-                                                                  authOtpProvider)
-                                                              .requestOtp("+" +
-                                                                  bookings[
-                                                                          index]
-                                                                      .customerPhoneNo![0]
-                                                                      .toString());
-
-                                                          if (response !=
-                                                              null) {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                  content: Text(
-                                                                      'OTP sent to customer!')),
+                                                          BookingStatus updateRequest = BookingStatus(status: "Done");
+                                                          var bookingOrderProvider_response = ref
+                                                              .read(billingProvider)
+                                                              .modifyBookingStatus(
+                                                              updateRequest, bookings[index].bookingId.toString());
+                                                          print("pring payment response");
+                                                          if (bookingOrderProvider_response != null) {
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(content: Text('Payment Done')),
                                                             );
-                                                            Navigator
-                                                                .pushNamedAndRemoveUntil(
+
+                                                            Navigator.pushNamedAndRemoveUntil(
                                                               context,
-                                                              '/paymentVerification',
-                                                              arguments:
-                                                                  bookings[
-                                                                          index]
-                                                                      .bookingId,
-                                                              (route) => true,
+                                                              '/dashboard',
+                                                                  (route) => false,
                                                             );
                                                           } else {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                  content: Text(
-                                                                      'Somethting went wrong!')),
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(content: Text('Something went wrong!')),
                                                             );
                                                           }
+                                                          // var response = await ref
+                                                          //     .read(
+                                                          //         authOtpProvider)
+                                                          //     .requestOtp("+" +
+                                                          //         bookings[
+                                                          //                 index]
+                                                          //             .customerPhoneNo![0]
+                                                          //             .toString());
+                                                          //
+                                                          // if (response !=
+                                                          //     null) {
+                                                          //   ScaffoldMessenger
+                                                          //           .of(context)
+                                                          //       .showSnackBar(
+                                                          //     SnackBar(
+                                                          //         content: Text(
+                                                          //             'OTP sent to customer!')),
+                                                          //   );
+                                                          //   Navigator
+                                                          //       .pushNamedAndRemoveUntil(
+                                                          //     context,
+                                                          //     '/paymentVerification',
+                                                          //     arguments:
+                                                          //         bookings[
+                                                          //                 index]
+                                                          //             .bookingId,
+                                                          //     (route) => true,
+                                                          //   );
+                                                          // } else {
+                                                          //   ScaffoldMessenger
+                                                          //           .of(context)
+                                                          //       .showSnackBar(
+                                                          //     SnackBar(
+                                                          //         content: Text(
+                                                          //             'Somethting went wrong!')),
+                                                          //   );
+                                                          // }
                                                         },
                                                         child: const Text(
                                                           'Cash Recieved',

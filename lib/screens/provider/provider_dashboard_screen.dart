@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maven_class/locale/base_language.dart';
@@ -11,6 +13,7 @@ import 'package:maven_class/utils/colors.dart';
 import 'package:maven_class/utils/config.dart';
 import 'package:maven_class/utils/config.dart';
 import 'package:maven_class/utils/images.dart';
+import 'package:upgrader/upgrader.dart';
 
 Languages? languages;
 
@@ -54,9 +57,12 @@ class _ProviderDashboardScreenState extends ConsumerState<ProviderDashboardScree
             fontSize: 18,
             fontWeight: FontWeight.w800),
       ),
-      body:
-      SafeArea(
-        child: fragmentList[currentIndex],
+      body: UpgradeAlert(
+        upgrader: Upgrader(durationUntilAlertAgain: const Duration(days:1) ,
+            dialogStyle: Platform.isIOS ? UpgradeDialogStyle.cupertino: UpgradeDialogStyle.material ),
+        child: SafeArea(
+          child: fragmentList[currentIndex],
+        ),
       ),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
